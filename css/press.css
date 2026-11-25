@@ -57,9 +57,9 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
   --hi:#ffffff;--lo:#e6dccb;--shade:rgba(42,28,19,.42);--pin:rgba(42,28,19,.06);
 }
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .sheet{--hi:#4d3c2f;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07)}
+  :root:not([data-theme="light"]) .sheet{--hi:#5e4a3a;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07)}
 }
-:root[data-theme="dark"] .sheet{--hi:#4d3c2f;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07)}
+:root[data-theme="dark"] .sheet{--hi:#5e4a3a;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07)}
 
 .stamp{position:absolute;top:calc(var(--u) * 1.6);right:calc(var(--u) * 2);margin:0;color:var(--muted);font-style:italic;font-size:.78rem;opacity:.75}
 
