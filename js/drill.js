@@ -20,7 +20,7 @@ const nextButton = byId("next");
 let lang = savedLanguage();
 let mode = "read";
 let levelId = "aj";
-let round = null; // { level, queue, at, right, missed, answered, current }
+let round = null; // { level, queue, at, right, missed, again, answered, current }
 
 // ---- Settings: language, mode and level, remembered between visits ----
 
@@ -107,7 +107,7 @@ function makeQueue(items) {
 
 function startRound() {
   const level = currentLevel();
-  round = { level, queue: makeQueue(level.items), at: 0, right: 0, missed: [], answered: false, current: null };
+  round = { level, queue: makeQueue(level.items), at: 0, right: 0, missed: [], again: new Set(), answered: false, current: null };
   setup.hidden = true;
   done.hidden = true;
   game.hidden = false;
@@ -240,10 +240,21 @@ function answerWrite() {
 
 const capitalise = text => text.charAt(0).toUpperCase() + text.slice(1);
 
+// A missed cell comes back three questions later, once, so it gets a second look while it's fresh.
+const COME_BACK = 3;
+
 function settle(right, message) {
   round.answered = true;
+  const it = round.current;
   if (right) round.right++;
-  else round.missed.push(round.current);
+  else {
+    if (!round.missed.includes(it)) round.missed.push(it);
+    if (!round.again.has(it.key)) {
+      round.again.add(it.key);
+      round.queue.splice(Math.min(round.at + 1 + COME_BACK, round.queue.length), 0, it);
+      message += " It will come back in a moment.";
+    }
+  }
   feedback.textContent = message;
   feedback.className = "fb " + (right ? "ok" : "bad");
   feedback.hidden = false;
@@ -261,14 +272,48 @@ function next() {
 function finish() {
   game.hidden = true;
   done.hidden = false;
-  done.replaceChildren(makeElement("p", "score", `${round.right} of ${round.queue.length} right`));
+  const total = round.queue.length;
+  const verdict = round.right === total ? "A clean sheet." : round.right >= total * .75 ? "Nearly there." : "Worth another go.";
+  const parts = [
+    makeElement("p", "score", `${round.right} of ${total} right`),
+    makeElement("p", "verdict", verdict),
+  ];
+
+  if (round.missed.length) {
+    parts.push(makeElement("p", "lbl", "To look at again"));
+    const sheet = makeElement("div", "missed");
+    for (const it of round.missed) {
+      const glyph = makeElement("span", "glyph");
+      glyph.title = `${printOf(it)}: ${dotsText(it.cell)}`;
+      const cells = makeElement("span", "cells");
+      if (it.prefix) cells.append(drawCell(it.prefix));
+      cells.append(drawCell(it.cell));
+      glyph.append(cells, makeElement("span", "print", printOf(it)));
+      sheet.append(glyph);
+    }
+    parts.push(sheet);
+  }
+
   const again = makeElement("button", "primary", "Again");
   again.type = "button";
   again.addEventListener("click", startRound);
-  const back = makeElement("button", "ghost wide", "Change level");
+  parts.push(again);
+
+  const list = currentLevels();
+  const after = list[list.findIndex(level => level.id === round.level.id) + 1];
+  if (after) {
+    const onwards = makeElement("button", "ghost wide", `Next level: ${after.name}`);
+    onwards.type = "button";
+    onwards.addEventListener("click", () => { levelId = after.id; saveSettings(); showLevels(); startRound(); });
+    parts.push(onwards);
+  }
+  const back = makeElement("button", "ghost wide", "Change language, mode or level");
   back.type = "button";
   back.addEventListener("click", stop);
-  done.append(again, back);
+  parts.push(back);
+
+  done.replaceChildren(...parts);
+  again.focus({ preventScroll: true });
 }
 
 function stop() {
