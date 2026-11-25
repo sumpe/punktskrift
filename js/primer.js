@@ -110,6 +110,42 @@ function pressMini() {
 byId("mini-text").addEventListener("input", pressMini);
 parts.push(pressMini);
 
+// ---- 4. Every country its own braille, and contractions ----
+
+function pressCompare() {
+  const text = byId("compare-text").value || " ";
+  const box = byId("compare");
+  box.replaceChildren();
+  for (const [id, other] of Object.entries(BRAILLE_TABLES)) {
+    const row = makeElement("div", "compare-row" + (id === lang ? " chosen" : ""));
+    const name = makeElement("span", "compare-name", other.name);
+    name.lang = other.lang;
+    const sheet = makeElement("div", "sheet mini");
+    sheet.append(drawBraille(translate(text, other), other));
+    row.append(name, sheet);
+    box.append(row);
+  }
+}
+byId("compare-text").addEventListener("input", pressCompare);
+parts.push(pressCompare);
+
+// English contractions, from UEB grade 2 (checked against liblouis en-ueb-g2.ctb)
+const WORDSIGNS = [["you", "13456"], ["can", "14"], ["do", "145"], ["it", "1346"]];
+const STRONG = [["and", "12346"], ["for", "123456"], ["of", "12356"], ["the", "2346"], ["with", "23456"]];
+
+function drawContractions(boxId, list) {
+  const box = byId(boxId);
+  box.lang = "en";
+  for (const [word, cell] of list) {
+    const glyph = makeElement("span", "glyph");
+    glyph.title = `${word}: ${dotsText(cell)}`;
+    glyph.append(drawCell(cell), makeElement("span", "print", word));
+    box.append(glyph);
+  }
+}
+drawContractions("wordsigns", WORDSIGNS);
+drawContractions("strong", STRONG);
+
 // ---- Wiring ----
 
 buildLanguageSwitch(byId("langs"), lang, id => { lang = id; parts.forEach(redraw => redraw()); });
