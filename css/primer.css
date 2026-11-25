@@ -1,1 +1,42 @@
 /* Punktskrift Primer: how braille works, with small try-it parts. Loaded after braille.css. */
+.slip.examples{padding-bottom:6px}
+.slip.examples .seg{margin-bottom:14px}
+
+.primer{max-width:640px;margin:40px 0 0}
+.contents{margin:0 0 8px;padding:14px 18px;border-left:2px solid var(--line)}
+.contents ol{margin:0;padding:0 0 0 1.4em;color:var(--muted)}
+.contents li{padding:2px 0}
+.contents a{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--edge)}
+
+.primer section{padding-top:36px;scroll-margin-top:16px}
+.primer h2{margin:0 0 14px;font-weight:600;font-size:clamp(1.6rem,5.5vw,2rem);line-height:1.15;letter-spacing:-.01em}
+.primer h2 .no{display:inline-block;min-width:1.2em;color:var(--accent);font-style:italic;font-weight:400}
+.primer p{margin:0 0 14px;line-height:1.65;text-wrap:pretty}
+.primer em{font-style:italic}
+.primer a{color:var(--accent)}
+
+/* A try-it part: a card of paper with a small italic title */
+.try{margin:22px 0 24px;padding:18px 20px 20px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.try-title{margin:0 0 14px!important;color:var(--muted);font-style:italic;font-size:.94rem}
+.try-body{display:flex;flex-wrap:wrap;align-items:center;gap:24px}
+.try-pad{--u:clamp(30px,9vw,40px)}
+.caption{margin:12px 0 0!important;color:var(--muted);font-style:italic;font-size:.9rem}
+
+/* 1: what the tapped cell reads as */
+.reading{flex:1 1 200px;min-height:130px}
+.reading .big{margin:0 0 4px!important;font-size:3rem;line-height:1.1}
+.reading .dots{margin:0 0 6px!important;color:var(--muted);font-style:italic}
+.reading .what{color:var(--muted);font-size:.96rem}
+.meanings{margin:6px 0 0;padding:0 0 0 1.1em;font-size:.96rem;line-height:1.55}
+
+/* 2: the alphabet in three rows */
+.decades{--u:clamp(7px,2.2vw,12px);min-height:0;padding:calc(var(--u) * 1.6) calc(var(--u) * 1.2);overflow-x:auto}
+.decade{display:flex;flex-wrap:nowrap;align-items:flex-start;gap:calc(var(--u) * .8)}
+.row-label{display:block;margin:0 0 calc(var(--u) * .5);color:var(--muted);font-style:italic;font-size:.82rem}
+.row-label:not(:first-child){margin-top:calc(var(--u) * 1.4)}
+.decades .glyph{padding:calc(var(--u) * .35);border-radius:6px;cursor:default;transition:background-color .12s}
+.decades .glyph.lit{background:var(--hover);box-shadow:0 0 0 1px var(--edge)}
+/* A raised dot with a halo: the dots a row adds to the first */
+.dot.up.added{box-shadow:0 0 0 calc(var(--u) * .12) var(--card),0 0 0 calc(var(--u) * .24) var(--accent),calc(var(--u) * .06) calc(var(--u) * .12) calc(var(--u) * .2) var(--shade)}
+
+@media (hover:hover){.contents a:hover{text-decoration-color:var(--ink)}}

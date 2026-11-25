@@ -161,9 +161,7 @@ function answerRead(choice, button) {
 
 // ---- Write: build the cell on a six-dot pad ----
 
-// The brailler keys: on a Perkins Brailler, F D S are dots 1 2 3 and J K L are dots 4 5 6.
-const BRAILLER_KEYS = { f: 1, d: 2, s: 3, j: 4, k: 5, l: 6 };
-let pad = null; // the dot buttons, by dot number
+let pad = null; // the six-dot pad in Write mode
 
 function askWrite(it) {
   byId("ask").textContent = it.prefix ? "Write this digit. The number sign is already there." : it.kind === "sign" ? "Write this mark." : "Write this letter.";
@@ -173,21 +171,8 @@ function askWrite(it) {
 
   const board = makeElement("div", "board");
   if (it.prefix) board.append(drawGlyph({ print: "", cells: [it.prefix], role: "num" }, table()));
-  const grid = makeElement("div", "pad");
-  grid.setAttribute("role", "group");
-  grid.setAttribute("aria-label", "The six dots of the cell");
-  pad = {};
-  for (let dot = 1; dot <= 6; dot++) {
-    const button = makeElement("button", "pad-dot d" + dot);
-    button.type = "button";
-    button.setAttribute("aria-pressed", "false");
-    button.setAttribute("aria-label", `Dot ${dot}`);
-    button.append(makeElement("i", "dot"), makeElement("span", "num", String(dot)));
-    button.addEventListener("click", () => toggleDot(dot));
-    grid.append(button);
-    pad[dot] = button;
-  }
-  board.append(grid);
+  pad = makePad();
+  board.append(pad.element);
 
   const check = makeElement("button", "primary", "Check");
   check.type = "button";
@@ -196,32 +181,27 @@ function askWrite(it) {
   const keys = makeElement("p", "keys");
   keys.innerHTML = "Tap the dots, or use the brailler keys <kbd>F</kbd> <kbd>D</kbd> <kbd>S</kbd> for dots 1 2 3 and <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd> for 4 5 6. <kbd>Enter</kbd> checks.";
   answerBox.append(board, check, keys);
-  pad[1].focus({ preventScroll: true });
+  pad.buttons[1].focus({ preventScroll: true });
 }
 
 function toggleDot(dot) {
-  if (round.answered) return;
-  const button = pad[dot];
-  const on = button.getAttribute("aria-pressed") !== "true";
-  button.setAttribute("aria-pressed", on);
-  button.querySelector(".dot").classList.toggle("up", on);
+  if (!round.answered) pad.toggle(dot);
 }
-
-const padCell = () => [1, 2, 3, 4, 5, 6].filter(dot => pad[dot].getAttribute("aria-pressed") === "true").join("");
 
 function answerWrite() {
   if (round.answered) return;
   const it = round.current;
-  const yours = padCell();
+  const yours = pad.cell();
   const right = yours === it.cell;
   const missed = [...it.cell].filter(dot => !yours.includes(dot));
   const extra = [...yours].filter(dot => !it.cell.includes(dot));
 
   // On the pad: a ring where a dot is missing, a cross on a dot that shouldn't be there
   for (let dot = 1; dot <= 6; dot++) {
-    pad[dot].disabled = true;
-    if (missed.includes(String(dot))) pad[dot].classList.add("missed");
-    if (extra.includes(String(dot))) pad[dot].classList.add("extra");
+    const button = pad.buttons[dot];
+    button.disabled = true;
+    if (missed.includes(String(dot))) button.classList.add("missed");
+    if (extra.includes(String(dot))) button.classList.add("extra");
   }
   byId("check").hidden = true;
   answerBox.querySelector(".keys").hidden = true;
@@ -337,7 +317,7 @@ document.addEventListener("keydown", event => {
     if (event.key === "Enter") { event.preventDefault(); answerWrite(); return; }
     if (event.key === "Backspace" || event.key === "Delete") {
       event.preventDefault();
-      for (let d = 1; d <= 6; d++) if (pad[d].getAttribute("aria-pressed") === "true") toggleDot(d);
+      pad.clear();
     }
     return;
   }

@@ -24,10 +24,51 @@
     <h1>The Primer</h1>
     <p class="sub">How braille works, from six dots to a whole page.</p>
   </header>
+
+  <div class="slip examples">
+    <span class="lbl" id="lang-label">Examples in</span>
+    <div class="seg" id="langs" role="radiogroup" aria-labelledby="lang-label"></div>
+  </div>
+
+  <article class="primer">
+    <nav class="contents" aria-label="Sections">
+      <ol>
+        <li><a href="#cell">The cell</a></li>
+        <li><a href="#alphabet">The alphabet's pattern</a></li>
+      </ol>
+    </nav>
+
+    <section id="cell">
+      <h2><span class="no">1</span> The cell</h2>
+      <p>Braille is read by touch, a few millimetres at a time. Every character sits in a <em>cell</em>: two columns of three dots, about 2.5 mm apart, small enough that one fingertip covers the whole cell at once.</p>
+      <p>The dots are numbered down the left column, 1 2 3, then down the right, 4 5 6. Braille readers and teachers name every character by its dots: <em>d</em> is “dots 1 4 5”. Each dot is either raised or flat, so a cell has 64 possible patterns. Leave out the blank one and that leaves 63 for letters, digits, punctuation and everything else.</p>
+      <div class="try" id="try-cell">
+        <p class="try-title">Try it: tap the dots</p>
+        <div class="try-body">
+          <div class="try-pad" id="cell-pad"></div>
+          <div class="reading" id="cell-reading" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="alphabet">
+      <h2><span class="no">2</span> The alphabet's pattern</h2>
+      <p>The braille alphabet isn't 26 shapes to learn one by one. It's ten shapes, used three times.</p>
+      <p>The first ten letters, <em>a</em> to <em>j</em>, use only the top four dots. The next ten, <em>k</em> to <em>t</em>, are the same shapes with dot 3 added. The last row adds dots 3 and 6 to the first five shapes, giving <em>u v x y z</em>.</p>
+      <div class="try" id="try-alphabet">
+        <p class="try-title">Try it: point at a letter to see its row-mates</p>
+        <div class="decades sheet" id="decades"></div>
+        <p class="caption">Ringed dots are the ones each row adds to the first.</p>
+      </div>
+      <p>And <em>w</em>? Louis Braille built the alphabet in French order, and in the France of the 1820s <em>w</em> was seldom used. So it doesn't fit the pattern: it comes after the others, on dots 2 4 5 6. That is <em>j</em> with dot 6 added.</p>
+      <p>The same trick gives the digits: <em>a</em> to <em>j</em> double as 1 to 9 and 0. There's more on that in the next section.</p>
+    </section>
+  </article>
 </main>
 <footer class="foot">By Peter S</footer>
 <script src="js/tables.js"></script>
 <script src="js/braille.js"></script>
+<script src="js/lessons.js"></script>
 <script src="js/common.js"></script>
 <script src="js/primer.js"></script>
 </body>

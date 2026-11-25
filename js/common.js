@@ -104,6 +104,41 @@ function drawBraille(result, table) {
   return page;
 }
 
+// ---- A six-dot pad: a cell you build by tapping its dots ----
+
+// Returns { element, buttons, cell(), toggle(dot), clear() }. onChange(cell) runs after every change.
+function makePad(onChange = () => {}) {
+  const element = makeElement("div", "pad");
+  element.setAttribute("role", "group");
+  element.setAttribute("aria-label", "The six dots of a cell");
+  const buttons = {};
+  for (let dot = 1; dot <= 6; dot++) {
+    const button = makeElement("button", "pad-dot d" + dot);
+    button.type = "button";
+    button.setAttribute("aria-pressed", "false");
+    button.setAttribute("aria-label", `Dot ${dot}`);
+    button.append(makeElement("i", "dot"), makeElement("span", "num", String(dot)));
+    button.addEventListener("click", () => toggle(dot));
+    element.append(button);
+    buttons[dot] = button;
+  }
+  const isOn = dot => buttons[dot].getAttribute("aria-pressed") === "true";
+  function toggle(dot) {
+    if (buttons[dot].disabled) return;
+    const on = !isOn(dot);
+    buttons[dot].setAttribute("aria-pressed", on);
+    buttons[dot].querySelector(".dot").classList.toggle("up", on);
+    onChange(cell());
+  }
+  const cell = () => [1, 2, 3, 4, 5, 6].filter(isOn).join("");
+  const clear = () => { for (let dot = 1; dot <= 6; dot++) if (isOn(dot)) toggle(dot); };
+  return { element, buttons, cell, toggle, clear };
+}
+
+// The brailler keys: on a Perkins Brailler the left hand's index, middle and ring fingers press dots 1 2 3
+// and the right hand's 4 5 6; on a computer keyboard those fingers rest on F D S and J K L.
+const BRAILLER_KEYS = { f: 1, d: 2, s: 3, j: 4, k: 5, l: 6 };
+
 // ---- Explanations: a small ink slip over a labelled cell, on hover or tap ----
 
 const slip = makeElement("div", "explain");

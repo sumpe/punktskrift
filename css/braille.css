@@ -88,6 +88,18 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
 }
 @keyframes ink{from{opacity:0}to{opacity:1}}
 
+/* A six-dot pad to build a cell on (the Drill's Write mode, the Primer's try-it parts) */
+.pad{display:grid;grid-template-columns:repeat(2,calc(var(--u) * 1.7));grid-template-rows:repeat(3,calc(var(--u) * 1.7));gap:6px;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.pad-dot{position:relative;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:transparent;transition:background-color .12s,border-color .12s}
+.pad-dot .dot{width:calc(var(--u) * .9);height:calc(var(--u) * .9)}
+.pad-dot .dot:not(.up){background:radial-gradient(circle,var(--pin) 0 20%,transparent 24%)}
+.pad-dot .num{position:absolute;right:2px;bottom:0;color:var(--muted);font-size:.72rem;font-style:italic}
+.pad-dot[aria-pressed="true"]{border-color:var(--edge)}
+.pad-dot:disabled{cursor:default}
+/* After checking: a ring where a dot is missing, a cross over a dot that shouldn't be there */
+.pad-dot.missed{border:2px dashed var(--bad)}
+.pad-dot.missed .dot{background:none;box-shadow:inset 0 0 0 2px var(--bad);opacity:.8}
+.pad-dot.extra::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font-size:calc(var(--u) * .9);line-height:1}
 .note{margin:12px 0 0;color:var(--muted);font-style:italic;font-size:.94rem}
 .note .eg{font-style:normal;font-size:.9em}
 
@@ -99,7 +111,7 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 @media (max-width:400px){main{padding-left:16px;padding-right:16px}.slip{padding:16px}}
-@media (hover:hover){.ghost:hover{background:var(--hover)}}
+@media (hover:hover){.ghost:hover{background:var(--hover)}.pad-dot:not(:disabled):hover{background:var(--hover)}}
 @media print{
   html,body{background:#fff}
   .nav,.foot,.explain{display:none}
