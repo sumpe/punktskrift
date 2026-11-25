@@ -71,6 +71,19 @@ for (const [id, cases] of Object.entries(CASES)) {
   });
 }
 
+suite("Indicator cells say what they are, so the page can explain them", check => {
+  const roles = (text, id) => translate(text, BRAILLE_TABLES[id]).lines.flat(2)
+    .map(glyph => glyph.role).filter(role => !["letter", "digit", "sign"].includes(role)).join(" ");
+  for (const [text, id, expected] of [
+    ["Hi", "en", "cap"], ["NASA", "en", "capsWord"], ["ABCs", "en", "capsWord capsEnd"],
+    ["THIS IS LOUD", "en", "capsPhrase capsEnd"], ["3a", "en", "num let"],
+    ["ÄRGER", "de", "capsWord"], ["PKOs", "pl", "cap cap cap"],
+  ]) {
+    const got = roles(text, id);
+    check(got === expected, `${id} ${JSON.stringify(text)} gave ${got}, expected ${expected}`);
+  }
+});
+
 suite("Unknown characters are reported once each", check => {
   const result = translate("a ☃ b ☃ €", BRAILLE_TABLES.en);
   check(result.unknown.join("") === "☃", `got ${JSON.stringify(result.unknown)}`);

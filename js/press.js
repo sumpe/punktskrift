@@ -17,6 +17,7 @@ const langSwitch = byId("langs");
 const note = byId("note");
 const showPrint = byId("show-print");
 const reader = byId("reader");
+const explainHint = byId("explain-hint");
 
 let lang = Object.keys(BRAILLE_TABLES)[0];
 let pressed = null; // the text on the sheet now
@@ -27,13 +28,15 @@ let braille = "";    // the sheet as Unicode braille, for copying
 const pressButton = byId("go");
 const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-// What the small print says under the indicator cells, and what it means on hover
+// Indicator cells have no print letter of their own. The small print names them,
+// and hovering (or tapping) explains them to people who don't read braille.
 const LABELS = {
-  cap: ["cap", "capital sign"],
-  caps: ["caps", "capitals sign: the whole word, or several words"],
-  capsEnd: ["end", "end of capitals"],
-  num: ["num", "number sign: a–j are digits until the word ends"],
-  let: ["let", "letter sign: what follows is a letter, not a digit"],
+  cap: ["cap", "Capital sign. Braille has no capital letters of its own, so this cell says the next letter is a capital."],
+  capsWord: ["caps", "Capitals sign. This cell says the whole word that follows is in capitals."],
+  capsPhrase: ["caps", "Capitals sign for several words. Everything up to the end-of-capitals sign is in capitals."],
+  capsEnd: ["end", "End of capitals. From here the letters are lower case again."],
+  num: ["num", "Number sign. Braille has no digits of its own: after this cell, the letters a to j stand for 1 to 9 and 0."],
+  let: ["let", "Letter sign. It ends the number, so the next cell is read as a letter, not a digit."],
 };
 
 // ---- The language switch, built from the tables ----
@@ -85,12 +88,12 @@ function drawGlyph(glyph) {
   if (glyph.role === "unknown") cells.append(makeElement("span", "cell missing"));
   else glyph.cells.forEach(cell => cells.append(drawCell(cell)));
 
-  let print = glyph.print, meaning = null;
-  const label = glyph.role === "cap" && glyph.cells.length > 1 ? "caps" : glyph.role;
-  if (LABELS[label]) [print, meaning] = LABELS[label];
+  let print = glyph.print, explain = null;
+  if (LABELS[glyph.role]) [print, explain] = LABELS[glyph.role];
+  if (glyph.role === "unknown") explain = `${BRAILLE_TABLES[lang].english} braille has no cell for “${glyph.print}”, so the press left the space empty.`;
   const under = makeElement("span", "print", print);
-  if (meaning) { box.title = meaning; under.classList.add("label"); }
-  if (glyph.role === "unknown") box.title = `No ${BRAILLE_TABLES[lang].english} braille for “${glyph.print}”`;
+  if (LABELS[glyph.role]) under.classList.add("label");
+  if (explain) { box.dataset.explain = explain; box.classList.add("explained"); }
   box.append(cells, under);
   return box;
 }
@@ -124,6 +127,9 @@ function press(text) {
   braille = toUnicode(result);
   reader.textContent = `${table.english} braille for “${text}”: ${braille}`;
   rememberInLink();
+
+  // A word on the labels, when the sheet has any
+  explainHint.hidden = !page.querySelector(".explained");
 
   if (result.unknown.length) {
     note.textContent = `Not in ${table.english} braille, so left as an empty cell: ${result.unknown.join(" ")}`;
@@ -160,6 +166,48 @@ function finishPunching() {
   if (page) page.classList.remove("punching");
   pressButton.textContent = "Press";
 }
+
+// ---- Explanations: a small ink slip over a labelled cell, on hover or tap ----
+
+const slip = makeElement("div", "explain");
+slip.setAttribute("role", "tooltip");
+document.body.append(slip);
+let explaining = null;
+
+function showExplanation(glyph) {
+  explaining = glyph;
+  slip.textContent = glyph.dataset.explain;
+  slip.classList.add("on");
+  const box = glyph.getBoundingClientRect();
+  const width = slip.offsetWidth, height = slip.offsetHeight, margin = 8;
+  const left = Math.min(Math.max(margin, box.left + box.width / 2 - width / 2), window.innerWidth - width - margin);
+  const above = box.top - height - 10;
+  slip.style.transform = `translate(${Math.round(left)}px, ${Math.round(above > margin ? above : box.bottom + 10)}px)`;
+}
+
+function hideExplanation() {
+  explaining = null;
+  slip.classList.remove("on");
+}
+
+sheet.addEventListener("pointerover", event => {
+  const glyph = event.target.closest(".explained");
+  if (glyph && event.pointerType === "mouse") showExplanation(glyph);
+});
+sheet.addEventListener("pointerout", event => {
+  const glyph = event.target.closest(".explained");
+  if (glyph && event.pointerType === "mouse" && !glyph.contains(event.relatedTarget)) hideExplanation();
+});
+// A tap shows the explanation; a second tap, or a tap elsewhere, hides it.
+// With a mouse, hovering already shows it, so a click on the cell leaves it up.
+const hoverable = window.matchMedia("(hover: hover)");
+document.addEventListener("click", event => {
+  const glyph = event.target.closest && event.target.closest(".explained");
+  if (glyph && (glyph !== explaining || hoverable.matches)) showExplanation(glyph);
+  else hideExplanation();
+});
+window.addEventListener("scroll", hideExplanation, { passive: true });
+document.addEventListener("keydown", event => { if (event.key === "Escape") hideExplanation(); });
 
 // ---- Keeping and sharing ----
 

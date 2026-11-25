@@ -7,7 +7,7 @@ A sibling of Piotrek's Polynoun and Polyverb Tinctures (now in [The Tincture Pro
 ## What it does
 
 - **Five braillers in one.** It writes uncontracted braille (one cell per letter, no word shortcuts) in **English, Svenska, Deutsch, Polski and Português**. Each language uses its own national cells for accented letters, capitals, numbers and punctuation. So *ö* is ⠪ in Swedish and German but ⠘⠒⠕ (diaeresis, then o) in English, and a full stop is ⠲ in English but ⠄ in the other four.
-- **Indicators, labelled.** Capital signs, the number sign and the letter sign get their own cells, as in real braille. The small print under them says *cap*, *caps*, *num* or *let*, and hovering explains it.
+- **Indicators, labelled.** Capital signs, the number sign and the letter sign get their own cells, as in real braille. The small print under them says *cap*, *caps*, *end*, *num* or *let*. Hovering over one, or tapping it, brings up a short explanation for people who don't read braille.
 - **The press at work.** Cells pop up one after another. Press again, hit Esc or click the sheet to finish at once. With reduced motion turned on, the page appears whole.
 - **Embossed, not printed.** The dots are drawn in the paper's own colour and shaped only by light and shadow, in both light and dark mode. Real braille proportions: dots 2.5 mm apart, cells 6 mm, lines 10 mm.
 - **Print on or off.** A toggle hides the print, leaving the bare sheet.

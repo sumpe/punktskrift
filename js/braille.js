@@ -65,7 +65,8 @@ function isShouted(word) {
  *   lines   — an array of lines; each line an array of words; each word an array of glyphs
  *   glyph   — { print, cells, role }, where role is one of
  *             letter, digit, sign (punctuation and symbols),
- *             cap, capsEnd, num, let (indicators: capital, end of capitals, number, letter sign),
+ *             cap, capsWord, capsPhrase, capsEnd, num, let (indicators: a capital letter, a word in
+ *             capitals, several words in capitals, end of capitals, number sign, letter sign),
  *             unknown (a character this braille has no cell for; cells is [])
  *   unknown — the characters that had no cell, in the order they first appeared
  */
@@ -103,21 +104,21 @@ function translateWord(word, table, phraseRole, unknown) {
   const glyphs = [];
   const add = (print, sign, role) => glyphs.push({ print, cells: sign ? cellsOf(sign) : [], role });
 
-  // Where the capital signs go: before[k] is the sign before character k, after[k] the sign after it.
+  // Where the capital signs go: before[k] is [sign, role] before character k, after[k] the sign after it.
   const before = {}, after = {};
   const { letters, runs } = capitalRuns(chars);
   if (phraseRole) {
-    if (phraseRole === "first" || phraseRole === "only") before[letters[0]] = table.capsPhrase;
+    if (phraseRole === "first" || phraseRole === "only") before[letters[0]] = [table.capsPhrase, "capsPhrase"];
     if ((phraseRole === "last" || phraseRole === "only") && table.capsPhraseEnd) after[letters[letters.length - 1]] = table.capsPhraseEnd;
   } else {
     for (const [first, last] of runs) {
       const followedByLower = last < letters.length - 1;
-      if (first === last) before[letters[first]] = table.capital;
+      if (first === last) before[letters[first]] = [table.capital, "cap"];
       else if (!followedByLower || table.capsWordEnd) {
-        before[letters[first]] = table.capsWord;
+        before[letters[first]] = [table.capsWord, "capsWord"];
         if (followedByLower) after[letters[last]] = table.capsWordEnd;
       } else {
-        for (let n = first; n <= last; n++) before[letters[n]] = table.capital;
+        for (let n = first; n <= last; n++) before[letters[n]] = [table.capital, "cap"];
       }
     }
   }
@@ -143,7 +144,7 @@ function translateWord(word, table, phraseRole, unknown) {
       const lower = ch.toLowerCase();
       const sign = table.letters[lower] || BASE_LETTERS[lower] || accented(lower, table);
       if (!sign) { add(ch, null, "unknown"); noteUnknown(ch, unknown); return; }
-      if (before[k]) add("", before[k], "cap");
+      if (before[k]) add("", ...before[k]);
       // After a number, a lower-case letter that looks like a digit needs the letter sign.
       if (afterDigit && isLower(ch) && DIGIT_LIKE.has(cellsOf(sign)[0])) add("", table.letterSign, "let");
       add(ch, sign, "letter");
