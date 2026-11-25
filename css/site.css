@@ -1,0 +1,80 @@
+/* Punktskrift Press: the colours (light and dark), the type, the nav and the footer.
+   Copied from Piotrek's Polynoun Tincture so the two look like siblings. */
+:root{
+  --serif:"Iowan Old Style","Palatino Linotype","URW Palladio L",P052,Palatino,"Book Antiqua",Georgia,serif;
+  --paper:#f7f3ec;
+  --card:#fdfbf7;
+  --sunk:#ece5d9;
+  --ink:#2a1c13;
+  --muted:#67503f;
+  --line:#e2d8c8;
+  --edge:#8f7a63;
+  --hover:rgba(42,28,19,.06);
+  --focus:#2a1c13;
+  --ok:#2c6640;
+  --okbg:#e0eadb;
+  --bad:#9a3426;
+  --badbg:#f4ddd5;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#19110c;
+    --card:#221812;
+    --sunk:#2c2019;
+    --ink:#f0e4d2;
+    --muted:#ab9886;
+    --line:#3a2b21;
+    --edge:#76624f;
+    --hover:rgba(240,228,210,.06);
+    --focus:#f0e4d2;
+    --ok:#95d3a5;
+    --okbg:#1d3123;
+    --bad:#f29d90;
+    --badbg:#40231c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#19110c;
+  --card:#221812;
+  --sunk:#2c2019;
+  --ink:#f0e4d2;
+  --muted:#ab9886;
+  --line:#3a2b21;
+  --edge:#76624f;
+  --hover:rgba(240,228,210,.06);
+  --focus:#f0e4d2;
+  --ok:#95d3a5;
+  --okbg:#1d3123;
+  --bad:#f29d90;
+  --badbg:#40231c;
+  color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:17px/1.55 var(--serif);font-kerning:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* Site navigation */
+.nav{border-bottom:1px solid var(--line)}
+.nav .in{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:760px;margin:0 auto;padding:2px 20px}
+.brand{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-weight:600;font-size:1.06rem;letter-spacing:.01em;text-decoration:none;border-radius:4px}
+.nav .aside{color:var(--muted);font-style:italic;font-size:.94rem}
+
+/* Footer: a hairline the width of the text column, then the credit */
+.foot{width:calc(100% - 40px);max-width:720px;margin:0 auto;padding:18px 0 32px;border-top:1px solid var(--line);color:var(--muted);font-style:italic;font-size:.85rem;text-align:right}
+
+@media (max-width:400px){
+  .nav .in{padding-left:16px;padding-right:16px}
+  .foot{width:calc(100% - 32px)}
+}
+@media (hover:hover){
+  .brand:hover{color:var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}

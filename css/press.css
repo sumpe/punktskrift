@@ -1,0 +1,48 @@
+/* Punktskrift Press: the input slip, the language switch, the Press button and the braille sheet.
+   Loaded after site.css. The control styles follow Polynoun's trainers. */
+:root{
+  --accent:#7a4b2c;
+  --fill:#2a1c13;
+  --on-fill:#f7f3ec;
+  --ring:rgba(122,75,44,.22);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --accent:#d9a77f;
+    --fill:#f0e4d2;
+    --on-fill:#19110c;
+    --ring:rgba(217,167,127,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --accent:#d9a77f;
+  --fill:#f0e4d2;
+  --on-fill:#19110c;
+  --ring:rgba(217,167,127,.25);
+}
+
+main{max-width:760px;margin:0 auto;padding:clamp(32px,7vh,64px) 20px 64px}
+
+/* Masthead, as on Polynoun's front page */
+.mast{max-width:540px}
+h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;letter-spacing:-.015em;text-wrap:balance}
+.sub{margin:14px 0 0;color:var(--muted);font-style:italic;font-size:1.2rem;text-wrap:pretty}
+
+/* The slip you write on */
+.slip{max-width:540px;margin:36px 0 0;padding:20px 20px 22px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.lbl{display:block;margin:0 0 10px;color:var(--muted);font-style:italic}
+.seg{display:flex;flex-wrap:wrap;gap:3px;padding:3px;margin:0 0 20px;background:var(--sunk);border-radius:8px}
+.seg button{flex:1 1 auto;min-height:44px;padding:8px;border:0;border-radius:6px;background:transparent;white-space:nowrap;transition:background-color .15s,color .15s}
+.seg button.on{background:var(--card);color:var(--accent);font-weight:600;box-shadow:0 0 0 1px var(--edge)}
+#text{display:block;width:100%;min-height:88px;padding:10px 14px;border:1px solid var(--edge);border-radius:6px;background:var(--paper);font-size:1.2rem;line-height:1.4;resize:vertical;transition:border-color .15s,box-shadow .15s}
+#text:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+#text::placeholder{color:var(--muted);opacity:.6;font-style:italic}
+.primary{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:16px;padding:12px 20px;border:0;border-radius:6px;background:var(--fill);color:var(--on-fill);font-weight:600;font-size:1.06rem;letter-spacing:.04em;transition:opacity .15s}
+.primary:active{opacity:.85}
+
+/* The sheet of braille paper */
+.sheet-wrap{margin:36px 0 0}
+.sheet{position:relative;min-height:280px;padding:clamp(24px,6vw,48px);background:var(--card);border:1px solid var(--line);border-radius:3px;box-shadow:0 1px 2px rgba(42,28,19,.06),0 10px 30px -12px rgba(42,28,19,.18)}
+.blank{margin:0;color:var(--muted);font-style:italic;text-align:center;padding-top:96px}
+
+@media (max-width:400px){main{padding-left:16px;padding-right:16px}.slip{padding:16px}}

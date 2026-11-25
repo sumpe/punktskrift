@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#19110c" media="(prefers-color-scheme: dark)">
+<title>Piotrek's Punktskrift Press</title>
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/press.css">
+</head>
+<body>
+<nav class="nav" aria-label="Punktskrift Press"><div class="in">
+  <a class="brand" href="index.html" aria-current="page">Punktskrift Press</a>
+  <span class="aside">uncontracted braille</span>
+</div></nav>
+<main>
+  <header class="mast">
+    <h1>Piotrek's Punktskrift Press</h1>
+    <p class="sub">Write a sentence, and the press embosses it in braille.</p>
+  </header>
+
+  <form id="press" class="slip" autocomplete="off">
+    <span class="lbl" id="lang-label">Braille of</span>
+    <div class="seg" id="langs" role="radiogroup" aria-labelledby="lang-label">
+      <button type="button" role="radio" aria-checked="true" class="on" data-lang="en" lang="en">English</button>
+      <button type="button" role="radio" aria-checked="false" data-lang="sv" lang="sv">Svenska</button>
+      <button type="button" role="radio" aria-checked="false" data-lang="de" lang="de">Deutsch</button>
+      <button type="button" role="radio" aria-checked="false" data-lang="pl" lang="pl">Polski</button>
+      <button type="button" role="radio" aria-checked="false" data-lang="pt" lang="pt-PT">Português</button>
+    </div>
+    <label class="lbl" for="text">Your sentence</label>
+    <textarea id="text" rows="3" spellcheck="false" placeholder="Hello, Piotrek."></textarea>
+    <button type="submit" class="primary" id="go">Press</button>
+  </form>
+
+  <section class="sheet-wrap" aria-label="Braille page">
+    <div class="sheet" id="sheet">
+      <p class="blank">The page is still blank.</p>
+    </div>
+  </section>
+</main>
+<footer class="foot">By Peter S</footer>
+</body>
+</html>
