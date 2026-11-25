@@ -89,8 +89,8 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
 .sheet.bare .line{row-gap:calc(var(--u) * 1)}
 
 /* The press at work: each cell's dots pop up at its own time (--t, set by press.js), then its print appears */
-.punching .dot.up{animation:punch .24s cubic-bezier(.3,1.6,.5,1) var(--t) both}
-.punching .print{animation:ink .3s ease-out var(--t) both}
+.punching .dot.up{animation:punch .4s cubic-bezier(.3,1.5,.5,1) var(--t) both}
+.punching .print{animation:ink .5s ease-out var(--t) both}
 @keyframes punch{
   from{transform:scale(.15);opacity:0;box-shadow:none}
   to{transform:scale(1);opacity:1}

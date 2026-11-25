@@ -135,12 +135,12 @@ function press(text) {
 
 // ---- The machine: cells are embossed one at a time, in reading order ----
 
-// About 35 ms a cell, like a brailler, but a long text never takes more than about four seconds.
+// About 120 ms a cell, the pace of a brailler at work; a long text speeds up so it never takes more than about 15 seconds.
 function punch(page) {
   if (calm.matches) return;
   const glyphs = [...page.querySelectorAll(".glyph")];
   const cellCount = page.querySelectorAll(".cell").length;
-  const step = Math.min(35, 4000 / Math.max(cellCount, 1));
+  const step = Math.min(120, 15000 / Math.max(cellCount, 1));
   let n = 0;
   for (const glyph of glyphs) {
     glyph.style.setProperty("--t", `${Math.round(n * step)}ms`);
@@ -148,7 +148,7 @@ function punch(page) {
   }
   page.classList.add("punching");
   pressButton.textContent = "Pressing…";
-  punching = setTimeout(finishPunching, n * step + 300);
+  punching = setTimeout(finishPunching, n * step + 500);
 }
 
 // Skip to the finished page.
