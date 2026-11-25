@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Punktskrift Press tests</title>
+<link rel="stylesheet" href="../css/site.css">
+<style>
+main{max-width:720px;margin:0 auto;padding:32px 20px 64px}
+h1{margin:0 0 6px;font-weight:600;font-size:1.8rem}
+#sum{margin:0 0 24px;color:var(--muted);font-style:italic}
+.suite{margin:0 0 10px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+.suite.bad{border-color:var(--bad)}
+.suite p{margin:0;display:flex;justify-content:space-between;gap:12px}
+.suite .n{color:var(--muted);font-style:italic}
+.suite ul{margin:8px 0 0;padding:0 0 0 18px;color:var(--bad);font-size:.92rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Punktskrift Press tests</h1>
+  <p id="sum">Running…</p>
+  <div id="out"></div>
+</main>
+<!-- Opens straight from disk: no server needed. -->
+<script src="../js/tables.js"></script>
+<script src="../js/braille.js"></script>
+<script src="cases.js"></script>
+<script>
+const suites = [];
+function suite(name, run) {
+  const failures = [];
+  let count = 0;
+  run((ok, message) => { count++; if (!ok) failures.push(message); });
+  suites.push({ name, count, failures });
+}
+
+// "6 125 | 1" → the Unicode braille toUnicode() should give
+function fromDots(expected) {
+  return expected.split(" / ").map(line => line.split(" | ").map(word =>
+    word.split(" ").map(cell => cell.startsWith("=") ? cell.slice(1) : cellChar(cell)).join("")
+  ).join("⠀")).join("\n");
+}
+
+// Unicode braille back to dot numbers, so a failure reads like the cases
+function toDots(braille) {
+  return braille.split("\n").map(line => line.split("⠀").map(word => [...word].map(ch => {
+    const code = ch.charCodeAt(0) - 0x2800;
+    if (code < 0 || code > 63) return "=" + ch;
+    return [1, 2, 3, 4, 5, 6].filter(dot => code & (1 << (dot - 1))).join("");
+  }).join(" ")).join(" | ")).join(" / ");
+}
+
+suite("Every table cell is a real braille cell, and no two letters share one", check => {
+  for (const [id, table] of Object.entries(BRAILLE_TABLES)) {
+    const problems = tableProblems(table);
+    check(problems.length === 0, `${id}: ${problems.join("; ")}`);
+  }
+});
+
+suite("Every language has known translations", check => {
+  for (const id of Object.keys(BRAILLE_TABLES)) check(CASES[id] && CASES[id].length > 0, `${id} has no cases`);
+});
+
+for (const [id, cases] of Object.entries(CASES)) {
+  suite(`${BRAILLE_TABLES[id] ? BRAILLE_TABLES[id].name : id}: known translations`, check => {
+    for (const [text, expected] of cases) {
+      const got = toUnicode(translate(text, BRAILLE_TABLES[id]));
+      check(got === fromDots(expected), `${JSON.stringify(text)} gave ${toDots(got)}, expected ${expected}`);
+    }
+  });
+}
+
+suite("Unknown characters are reported once each", check => {
+  const result = translate("a ☃ b ☃ €", BRAILLE_TABLES.en);
+  check(result.unknown.join("") === "☃", `got ${JSON.stringify(result.unknown)}`);
+});
+
+const out = document.getElementById("out");
+let failed = 0, total = 0;
+for (const { name, count, failures } of suites) {
+  total += count;
+  failed += failures.length;
+  const box = document.createElement("section");
+  box.className = "suite" + (failures.length ? " bad" : "");
+  box.innerHTML = `<p><span></span><span class="n"></span></p>`;
+  box.querySelector("span").textContent = name;
+  box.querySelector(".n").textContent = failures.length ? `${failures.length} of ${count} failed` : `${count} passed`;
+  if (failures.length) {
+    const list = document.createElement("ul");
+    failures.forEach(message => { const item = document.createElement("li"); item.textContent = message; list.append(item); });
+    box.append(list);
+  }
+  out.append(box);
+}
+document.getElementById("sum").textContent = failed ? `${failed} of ${total} checks failed` : `All ${total} checks pass`;
+document.title = (failed ? "FAIL " : "PASS ") + document.title;
+</script>
+</body>
+</html>
