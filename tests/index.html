@@ -25,6 +25,7 @@ h1{margin:0 0 6px;font-weight:600;font-size:1.8rem}
 <!-- Opens straight from disk: no server needed. -->
 <script src="../js/tables.js"></script>
 <script src="../js/braille.js"></script>
+<script src="../js/lessons.js"></script>
 <script src="cases.js"></script>
 <script>
 const suites = [];
@@ -82,6 +83,64 @@ suite("Indicator cells say what they are, so the page can explain them", check =
     const got = roles(text, id);
     check(got === expected, `${id} ${JSON.stringify(text)} gave ${got}, expected ${expected}`);
   }
+});
+
+suite("Drill levels: every level has items, each a real cell, none sharing a cell", check => {
+  for (const [id, table] of Object.entries(BRAILLE_TABLES)) {
+    const list = levels(table);
+    check(list.length >= 6, `${id} has only ${list.length} levels`);
+    for (const level of list) {
+      check(level.items.length > 0, `${id} ${level.id} is empty`);
+      const keys = new Set();
+      for (const it of level.items) {
+        check(isCell(it.cell), `${id} ${level.id} ${it.print}: "${it.cell}" is not one cell`);
+        check(!keys.has(it.key), `${id} ${level.id}: two items on ${it.key}`);
+        keys.add(it.key);
+      }
+    }
+    for (const letter of table.alphabet) check(table.letters[letter], `${id}: alphabet letter ${letter} has no cell`);
+    const first = list[0].items.map(it => it.print).join("");
+    check(first === "abcdefghij", `${id} starts with ${first}`);
+  }
+});
+
+suite("The levels follow braille's own pattern: k–t are a–j plus dot 3, u v x y z are a–e plus dots 3 and 6", check => {
+  const plus = (cell, dots) => [...new Set(cell + dots)].sort().join("");
+  for (let k = 0; k < 10; k++) {
+    const a = "abcdefghij"[k], b = "klmnopqrst"[k];
+    check(BASE_LETTERS[b] === plus(BASE_LETTERS[a], "3"), `${b} is not ${a} plus dot 3`);
+  }
+  [..."uvxyz"].forEach((u, k) => check(BASE_LETTERS[u] === plus(BASE_LETTERS["abcde"[k]], "36"), `${u} is not ${"abcde"[k]} plus dots 3 and 6`));
+});
+
+suite("Reading a cell back gives what was written", check => {
+  for (const [id, table] of Object.entries(BRAILLE_TABLES)) {
+    for (const level of levels(table)) {
+      for (const it of level.items) {
+        const prints = lettersFor(table, it.cell).map(meaning => meaning.print);
+        check(prints.includes(it.print), `${id}: ${it.cell} doesn't read back as ${it.print} (got ${prints.join(" ")})`);
+      }
+    }
+  }
+  check(lettersFor(BRAILLE_TABLES.en, "3456").some(m => m.print === "number sign"), "3456 is not the number sign in English");
+});
+
+suite("Wrong answers on offer are close cells from the same level", check => {
+  let seed = 1;
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (const [id, table] of Object.entries(BRAILLE_TABLES)) {
+    for (const level of levels(table)) {
+      for (const it of level.items) {
+        const offered = neighbours(it, level.items, 3, random);
+        const want = Math.min(3, level.items.length - 1);
+        check(offered.length === want, `${id} ${level.id} ${it.print}: ${offered.length} choices, expected ${want}`);
+        check(offered.every(o => o.key !== it.key && level.items.includes(o)), `${id} ${level.id} ${it.print}: a choice repeats the answer or comes from elsewhere`);
+        check(new Set(offered.map(o => o.key)).size === offered.length, `${id} ${level.id} ${it.print}: the same choice twice`);
+      }
+    }
+  }
+  const near = neighbours(levels(BRAILLE_TABLES.en)[0].items[3], levels(BRAILLE_TABLES.en)[0].items, 3, random);
+  check(near.every(o => dotDistance(o.cell, "145") <= 2), `d's neighbours are far: ${near.map(o => o.print).join(" ")}`);
 });
 
 suite("Unknown characters are reported once each", check => {

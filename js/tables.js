@@ -9,7 +9,8 @@
 //
 // What each table holds:
 //   sample       a greeting, pressed when the sentence is left empty
-//   letters      letters beyond a–z, lower case (a–z are shared, in braille.js)
+//   alphabet     the language's own letters beyond a–z, the ones the Drill teaches
+//   letters      letters beyond a–z, lower case (a–z are shared, in braille.js); may include foreign ones
 //   accents      English only: accent signs written before a letter (combining mark → sign)
 //   signs        punctuation and symbols
 //   quotes       characters that open or close a quotation: [opening, closing]
@@ -33,6 +34,7 @@ BRAILLE_TABLES.en = {
   sample: "Hello, Piotrek.",
   code: "Unified English Braille, grade 1",
   source: "liblouis en-ueb-g1.ctb, en-ueb-chardefs.uti",
+  alphabet: "",
   letters: {},
   accents: {
     "́": "45-34",    // acute: café
@@ -78,6 +80,7 @@ BRAILLE_TABLES.sv = {
   sample: "Hej, Piotrek!",
   code: "Svensk punktskrift, oförkortad",
   source: "liblouis sv-g0.utb, sv-6common.uti (made with Punktskriftsnämnden)",
+  alphabet: "åäöé",
   letters: { "å": "16", "ä": "345", "ö": "246", "é": "123456", "ü": "1256", "à": "12356", "è": "2346" },
   signs: {
     ",": "2", ";": "23", ":": "25", ".": "3", "!": "235", "?": "26",
@@ -110,6 +113,7 @@ BRAILLE_TABLES.de = {
   sample: "Hallo, Piotrek!",
   code: "Deutsche Basisschrift",
   source: "liblouis de-g0.utb, de-g0-core.uti, de-chardefs6.cti, de-accents.cti (by SBS, the Swiss braille library)",
+  alphabet: "äöüß",
   letters: {
     "ä": "345", "ö": "246", "ü": "1256", "ß": "2346",
     // Other accented letters: dot 4, then the plain letter
@@ -160,6 +164,7 @@ BRAILLE_TABLES.pl = {
   sample: "Cześć, Piotrek!",
   code: "Polski brajl, pełnozapisowy",
   source: "liblouis Pl-Pl-g1.utb; € from Wikipedia, Polish Braille",
+  alphabet: "ąćęłńóśźż",
   letters: {
     "ą": "16", "ć": "146", "ę": "156", "ł": "126", "ń": "1456", "ó": "346", "ś": "246", "ź": "2346", "ż": "12346",
     "ä": "345", "é": "123456", "ü": "1256",
@@ -196,6 +201,7 @@ BRAILLE_TABLES.pt = {
   sample: "Olá, Piotrek!",
   code: "Grafia Braille para a Língua Portuguesa",
   source: "liblouis pt-pt-g1.utb, which follows the Grafia Braille para a Língua Portuguesa (2002)",
+  alphabet: "àáâãçéêíóôõú",
   letters: {
     "à": "1246", "á": "12356", "â": "16", "ã": "345", "ç": "12346",
     "é": "123456", "ê": "126", "í": "34", "ó": "346", "ô": "1456", "õ": "246", "ú": "23456", "ü": "1256",
