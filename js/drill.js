@@ -159,10 +159,86 @@ function answerRead(choice, button) {
     : `✗ Not quite: that cell is ${printOf(it)}, ${dotsText(it.cell)}. You chose ${printOf(choice)}, ${dotsText(choice.cell)}.`);
 }
 
-// Placeholder until Write mode exists
+// ---- Write: build the cell on a six-dot pad ----
+
+// The brailler keys: on a Perkins Brailler, F D S are dots 1 2 3 and J K L are dots 4 5 6.
+const BRAILLER_KEYS = { f: 1, d: 2, s: 3, j: 4, k: 5, l: 6 };
+let pad = null; // the dot buttons, by dot number
+
 function askWrite(it) {
-  askRead(it);
+  byId("ask").textContent = it.prefix ? "Write this digit. The number sign is already there." : it.kind === "sign" ? "Write this mark." : "Write this letter.";
+  const target = makeElement("div", "target", printOf(it));
+  target.lang = table().lang;
+  stage.replaceChildren(target);
+
+  const board = makeElement("div", "board");
+  if (it.prefix) board.append(drawGlyph({ print: "", cells: [it.prefix], role: "num" }, table()));
+  const grid = makeElement("div", "pad");
+  grid.setAttribute("role", "group");
+  grid.setAttribute("aria-label", "The six dots of the cell");
+  pad = {};
+  for (let dot = 1; dot <= 6; dot++) {
+    const button = makeElement("button", "pad-dot d" + dot);
+    button.type = "button";
+    button.setAttribute("aria-pressed", "false");
+    button.setAttribute("aria-label", `Dot ${dot}`);
+    button.append(makeElement("i", "dot"), makeElement("span", "num", String(dot)));
+    button.addEventListener("click", () => toggleDot(dot));
+    grid.append(button);
+    pad[dot] = button;
+  }
+  board.append(grid);
+
+  const check = makeElement("button", "primary", "Check");
+  check.type = "button";
+  check.id = "check";
+  check.addEventListener("click", answerWrite);
+  const keys = makeElement("p", "keys");
+  keys.innerHTML = "Tap the dots, or use the brailler keys <kbd>F</kbd> <kbd>D</kbd> <kbd>S</kbd> for dots 1 2 3 and <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd> for 4 5 6. <kbd>Enter</kbd> checks.";
+  answerBox.append(board, check, keys);
+  pad[1].focus({ preventScroll: true });
 }
+
+function toggleDot(dot) {
+  if (round.answered) return;
+  const button = pad[dot];
+  const on = button.getAttribute("aria-pressed") !== "true";
+  button.setAttribute("aria-pressed", on);
+  button.querySelector(".dot").classList.toggle("up", on);
+}
+
+const padCell = () => [1, 2, 3, 4, 5, 6].filter(dot => pad[dot].getAttribute("aria-pressed") === "true").join("");
+
+function answerWrite() {
+  if (round.answered) return;
+  const it = round.current;
+  const yours = padCell();
+  const right = yours === it.cell;
+  const missed = [...it.cell].filter(dot => !yours.includes(dot));
+  const extra = [...yours].filter(dot => !it.cell.includes(dot));
+
+  // On the pad: a ring where a dot is missing, a cross on a dot that shouldn't be there
+  for (let dot = 1; dot <= 6; dot++) {
+    pad[dot].disabled = true;
+    if (missed.includes(String(dot))) pad[dot].classList.add("missed");
+    if (extra.includes(String(dot))) pad[dot].classList.add("extra");
+  }
+  byId("check").hidden = true;
+  answerBox.querySelector(".keys").hidden = true;
+
+  let message;
+  if (right) message = `✓ Right: ${printOf(it)} is ${dotsText(it.cell)}.`;
+  else {
+    const parts = [];
+    if (missed.length) parts.push(`${missed.length === 1 ? "dot" : "dots"} ${missed.join(" ")} ${missed.length === 1 ? "is" : "are"} missing (ringed)`);
+    if (extra.length) parts.push(`${extra.length === 1 ? "dot" : "dots"} ${extra.join(" ")} shouldn't be there (crossed)`);
+    message = `✗ Not quite: ${printOf(it)} is ${dotsText(it.cell)}. ${capitalise(parts.join(", and "))}.`;
+    if (!yours) message = `✗ ${printOf(it)} is ${dotsText(it.cell)}: the missing dots are ringed.`;
+  }
+  settle(right, message);
+}
+
+const capitalise = text => text.charAt(0).toUpperCase() + text.slice(1);
 
 function settle(right, message) {
   round.answered = true;
@@ -202,12 +278,22 @@ function stop() {
   setup.hidden = false;
 }
 
-// ---- Keys: type the answer's letter in Read mode, Enter for the next question ----
+// ---- Keys: in Read mode type the answer's letter; in Write mode the brailler keys; Enter goes on ----
 
 document.addEventListener("keydown", event => {
   if (!round || game.hidden || event.metaKey || event.ctrlKey || event.altKey) return;
   if (round.answered) {
     if (event.key === "Enter" && document.activeElement !== nextButton) { event.preventDefault(); next(); }
+    return;
+  }
+  if (mode === "write") {
+    const dot = BRAILLER_KEYS[event.key.toLowerCase()];
+    if (dot) { event.preventDefault(); toggleDot(dot); return; }
+    if (event.key === "Enter") { event.preventDefault(); answerWrite(); return; }
+    if (event.key === "Backspace" || event.key === "Delete") {
+      event.preventDefault();
+      for (let d = 1; d <= 6; d++) if (pad[d].getAttribute("aria-pressed") === "true") toggleDot(d);
+    }
     return;
   }
   if (mode === "read" && event.key.length === 1) {

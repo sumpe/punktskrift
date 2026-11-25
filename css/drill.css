@@ -36,6 +36,25 @@
 .choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
 .choice.wrong::after{content:" ✗"}
 
+/* Write: the letter to write, and the pad */
+.target{min-width:2.2em;padding:4px 18px;border-radius:8px;background:var(--paper);border:1px solid var(--line);font-size:3.4rem;line-height:1.25;text-align:center}
+.board{--u:clamp(30px,9vw,40px);display:flex;justify-content:center;align-items:flex-start;gap:calc(var(--u) * .8);margin-top:22px}
+.board .glyph .print{font-size:calc(var(--u) * .5)}
+.pad{display:grid;grid-template-columns:repeat(2,calc(var(--u) * 1.7));grid-template-rows:repeat(3,calc(var(--u) * 1.7));gap:6px;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.pad-dot{position:relative;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:transparent;transition:background-color .12s,border-color .12s}
+.pad-dot .dot{width:calc(var(--u) * .9);height:calc(var(--u) * .9)}
+.pad-dot .dot:not(.up){background:radial-gradient(circle,var(--pin) 0 20%,transparent 24%)}
+.pad-dot .num{position:absolute;right:2px;bottom:0;color:var(--muted);font-size:.72rem;font-style:italic}
+.pad-dot[aria-pressed="true"]{border-color:var(--edge)}
+.pad-dot:disabled{cursor:default}
+/* After checking: a ring where a dot is missing, a cross over a dot that shouldn't be there */
+.pad-dot.missed{border:2px dashed var(--bad)}
+.pad-dot.missed .dot{background:none;box-shadow:inset 0 0 0 2px var(--bad);opacity:.8}
+.pad-dot.extra::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font-size:calc(var(--u) * .9);line-height:1}
+#check{margin-top:18px}
+.keys{margin:10px 0 0;color:var(--muted);font-size:.86rem;line-height:1.6;text-align:center;text-wrap:pretty}
+kbd{display:inline-block;min-width:1.5em;padding:0 4px;border:1px solid var(--edge);border-bottom-width:2px;border-radius:4px;background:var(--paper);font:600 .8rem/1.5 var(--serif);text-align:center}
+
 .fb{margin:16px 0 0;padding:10px 14px 12px;border-radius:6px;font-size:1rem;line-height:1.45;text-align:center;text-wrap:pretty}
 .fb.ok{background:var(--okbg);color:var(--ok)}
 .fb.bad{background:var(--badbg);color:var(--bad)}
@@ -49,4 +68,5 @@
   .choice:not(:disabled):hover{background:var(--hover)}
   .chips button:not(.on):hover{background:var(--hover)}
   .quiet:hover{color:var(--ink)}
+  .pad-dot:not(:disabled):hover{background:var(--hover)}
 }
