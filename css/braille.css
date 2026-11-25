@@ -1,0 +1,109 @@
+/* Punktskrift: what the Press, the Drill and the Primer share: accent colours, the masthead, the slip
+   and its controls, buttons, and braille itself (sheet, cells, dots, print, explanations).
+   Loaded after site.css. The control styles follow Polynoun's trainers. */
+:root{
+  --accent:#7a4b2c;
+  --fill:#2a1c13;
+  --on-fill:#f7f3ec;
+  --ring:rgba(122,75,44,.22);
+  /* Embossing: the dots are paper too, lit from the top left */
+  --hi:#ffffff;--lo:#e6dccb;--shade:rgba(42,28,19,.42);--pin:rgba(42,28,19,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --accent:#d9a77f;
+    --fill:#f0e4d2;
+    --on-fill:#19110c;
+    --ring:rgba(217,167,127,.25);
+    --hi:#5e4a3a;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07);
+  }
+}
+:root[data-theme="dark"]{
+  --accent:#d9a77f;
+  --fill:#f0e4d2;
+  --on-fill:#19110c;
+  --ring:rgba(217,167,127,.25);
+  --hi:#5e4a3a;--lo:#140d09;--shade:rgba(0,0,0,.7);--pin:rgba(240,228,210,.07);
+}
+
+main{max-width:760px;margin:0 auto;padding:clamp(32px,7vh,64px) 20px 64px}
+
+/* Masthead, as on Polynoun's front page */
+.mast{max-width:540px}
+h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;letter-spacing:-.015em;text-wrap:balance}
+.sub{margin:14px 0 0;color:var(--muted);font-style:italic;font-size:1.2rem;text-wrap:pretty}
+
+/* The slip: the one raised card of controls */
+.slip{max-width:540px;margin:36px 0 0;padding:20px 20px 22px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.lbl{display:block;margin:0 0 10px;color:var(--muted);font-style:italic}
+.seg{display:flex;flex-wrap:wrap;gap:3px;padding:3px;margin:0 0 20px;background:var(--sunk);border-radius:8px}
+.seg button{flex:1 1 auto;min-height:44px;padding:8px;border:0;border-radius:6px;background:transparent;white-space:nowrap;transition:background-color .15s,color .15s}
+.seg button.on{background:var(--card);color:var(--accent);font-weight:600;box-shadow:0 0 0 1px var(--edge)}
+.primary{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:16px;padding:12px 20px;border:0;border-radius:6px;background:var(--fill);color:var(--on-fill);font-weight:600;font-size:1.06rem;letter-spacing:.04em;transition:opacity .15s}
+.primary:active{opacity:.85}
+.ghost{min-height:40px;padding:6px 14px;border:1px solid var(--edge);border-radius:6px;background:transparent;font-size:.94rem;transition:background-color .15s}
+.toggle{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--muted);font-style:italic;font-size:.94rem;cursor:pointer}
+.toggle input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
+
+/* The sheet of braille paper.
+   Sizes follow real braille: dots 2.5 mm apart, cells 6 mm apart, lines 10 mm apart.
+   --u is one dot step; everything else is a multiple of it. */
+.sheet{
+  --u:clamp(9px,2.6vw,14px);
+  position:relative;min-height:calc(var(--u) * 16);padding:calc(var(--u) * 5) clamp(18px,5vw,calc(var(--u) * 3.5));
+  background:var(--card);border:1px solid var(--line);border-radius:3px;
+  box-shadow:0 1px 2px rgba(42,28,19,.06),0 10px 30px -12px rgba(42,28,19,.18);
+}
+.stamp{position:absolute;top:calc(var(--u) * 1.6);right:calc(var(--u) * 2);margin:0;color:var(--muted);font-style:italic;font-size:.78rem;opacity:.75}
+
+.line{display:flex;flex-wrap:wrap;column-gap:calc(var(--u) * 3.3);row-gap:calc(var(--u) * 1.4)}
+.line+.line{margin-top:calc(var(--u) * 1.4)}
+.line.empty{height:calc(var(--u) * 3)}
+.word{display:inline-flex;gap:calc(var(--u) * .65)}
+.glyph{display:inline-flex;flex-direction:column;align-items:center}
+.cells{display:inline-flex;gap:calc(var(--u) * .65)}
+
+/* A cell: two columns of three dots, numbered down the left (1 2 3) then the right (4 5 6) */
+.cell{display:grid;grid-template-columns:repeat(2,var(--u));grid-template-rows:repeat(3,var(--u));place-items:center}
+.d1{grid-area:1/1}.d2{grid-area:2/1}.d3{grid-area:3/1}.d4{grid-area:1/2}.d5{grid-area:2/2}.d6{grid-area:3/2}
+.dot{width:calc(var(--u) * .66);height:calc(var(--u) * .66);border-radius:50%;background:radial-gradient(circle,var(--pin) 0 22%,transparent 26%)}
+.dot.up{
+  background:radial-gradient(circle at 34% 30%,var(--hi) 0,var(--card) 48%,var(--lo) 100%);
+  box-shadow:calc(var(--u) * .06) calc(var(--u) * .12) calc(var(--u) * .2) var(--shade),inset calc(var(--u) * -.04) calc(var(--u) * -.06) calc(var(--u) * .1) var(--lo);
+}
+/* A character this braille has no cell for: the outline of an empty cell */
+.cell.missing{width:calc(var(--u) * 2);height:calc(var(--u) * 3);border:1px dashed var(--edge);border-radius:3px;opacity:.7}
+
+/* The print, small, under each cell */
+.print{min-height:1.3em;margin-top:calc(var(--u) * .5);color:var(--muted);font-size:calc(var(--u) * 1.25);line-height:1.3;white-space:pre}
+.print.label{font-style:italic;font-size:calc(var(--u) * .95);opacity:.8}
+.glyph.unknown .print{color:var(--accent)}
+
+/* The press at work: each cell's dots pop up at its own time (--t), then its print appears */
+.punching .dot.up{animation:punch .4s cubic-bezier(.3,1.5,.5,1) var(--t) both}
+.punching .print{animation:ink .5s ease-out var(--t) both}
+@keyframes punch{
+  from{transform:scale(.15);opacity:0;box-shadow:none}
+  to{transform:scale(1);opacity:1}
+}
+@keyframes ink{from{opacity:0}to{opacity:1}}
+
+.note{margin:12px 0 0;color:var(--muted);font-style:italic;font-size:.94rem}
+.note .eg{font-style:normal;font-size:.9em}
+
+/* Labelled cells explain themselves: a dotted underline under the label, and an ink slip on hover or tap */
+.explained{cursor:help}
+.explained .print{text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.explain{position:fixed;left:0;top:0;z-index:20;max-width:min(300px,calc(100vw - 16px));padding:7px 12px 8px;border-radius:6px;background:var(--ink);color:var(--paper);font:italic .9rem/1.45 var(--serif);pointer-events:none;opacity:0;transition:opacity .12s}
+.explain.on{opacity:1}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+@media (max-width:400px){main{padding-left:16px;padding-right:16px}.slip{padding:16px}}
+@media (hover:hover){.ghost:hover{background:var(--hover)}}
+@media print{
+  html,body{background:#fff}
+  .nav,.foot,.explain{display:none}
+  .explained .print{text-decoration:none}
+  .dot.up{background:#2a1c13;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .dot{background:none}
+}
