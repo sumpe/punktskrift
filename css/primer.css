@@ -56,4 +56,11 @@
 .contractions .print{font-size:.95rem;color:var(--ink);font-style:italic}
 @media (max-width:480px){.compare-row{grid-template-columns:1fr;gap:4px}}
 
+/* 5 and 6 */
+.primer h3{margin:26px 0 10px;font-weight:600;font-size:1.2rem}
+.side{margin:12px 0 6px!important;color:var(--muted);font-style:italic;font-size:.9rem}
+.side:first-of-type{margin-top:0!important}
+.onwards{margin-top:30px!important}
+.onwards .primary{text-decoration:none;color:var(--on-fill)}
+
 @media (hover:hover){.contents a:hover{text-decoration-color:var(--ink)}}

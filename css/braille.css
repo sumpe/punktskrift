@@ -100,6 +100,9 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
 .pad-dot.missed{border:2px dashed var(--bad)}
 .pad-dot.missed .dot{background:none;box-shadow:inset 0 0 0 2px var(--bad);opacity:.8}
 .pad-dot.extra::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;color:var(--bad);font-size:calc(var(--u) * .9);line-height:1}
+/* Keyboard keys in running text */
+kbd{display:inline-block;min-width:1.5em;padding:0 4px;border:1px solid var(--edge);border-bottom-width:2px;border-radius:4px;background:var(--paper);font:600 .8rem/1.5 var(--serif);text-align:center}
+
 .note{margin:12px 0 0;color:var(--muted);font-style:italic;font-size:.94rem}
 .note .eg{font-style:normal;font-size:.9em}
 

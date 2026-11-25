@@ -37,6 +37,8 @@
         <li><a href="#alphabet">The alphabet's pattern</a></li>
         <li><a href="#signs">Capitals, numbers, signs</a></li>
         <li><a href="#languages">Every country its own braille</a></li>
+        <li><a href="#history">Where it came from</a></li>
+        <li><a href="#tools">How braille is written</a></li>
       </ol>
     </nav>
 
@@ -92,6 +94,35 @@
       <p>A few cells stand for very common words, and the same cells are used for those letters inside longer words too:</p>
       <div class="contractions" id="strong"></div>
       <p>Swedish has its own <em>kortskrift</em>, German its <em>Kurzschrift</em>, and Portuguese its own contracted braille. Each has its own shortcuts and rules, which take a while to learn. That's why the Press sticks to uncontracted braille.</p>
+    </section>
+
+    <section id="history">
+      <h2><span class="no">5</span> Where it came from</h2>
+      <p>In the early 1800s, the school for blind children in Paris taught reading from books printed in large raised letters, the method of its founder Valentin Haüy. The books were heavy, and the letters were slow to feel out.</p>
+      <p>In 1815 <strong>Charles Barbier</strong>, who had served in the French artillery, published a writing made of raised dots for blind people. His cells held up to twelve dots in two columns, and they spelled out the <em>sounds</em> of French rather than its letters. It was later nicknamed “night writing”, and for a long time people said he had made it for soldiers to read in the dark. His 1815 book shows he meant it for the blind from the start.</p>
+      <p><strong>Louis Braille</strong> was born on 4 January 1809 in Coupvray, a small town east of Paris. At three he hurt his eye with an awl in his father's harness workshop; the infection spread, and by five he was blind in both eyes. In February 1819 he went to the Royal Institute for Blind Youth in Paris, where he met Barbier's dots. While still a pupil, at about fifteen, he began reworking them: six dots instead of twelve, standing for letters instead of sounds.</p>
+      <p>In 1829 he published his <em>Method of Writing Words, Music, and Plainsong by Means of Dots, for Use by the Blind and Arranged for Them</em>. That first version still mixed dots with dashes; the second edition, in 1837, used dots alone. Music was part of it from the start.</p>
+      <p>Braille died in Paris on 6 January 1852, aged 43. Two years later his own school adopted his system. A hundred years after his death his remains were moved to the Panthéon in Paris. Today there are braille codes for well over a hundred languages.</p>
+    </section>
+
+    <section id="tools">
+      <h2><span class="no">6</span> How braille is written</h2>
+      <h3>Slate and stylus</h3>
+      <p>The oldest way, and still the cheapest, is a <em>slate</em>, a hinged frame with rows of cell-shaped windows, and a <em>stylus</em>, a blunt point. You press each dot <em>into</em> the back of the paper, so the bumps rise on the other side. That means you write starting at the upper right, each cell backwards, and turn the sheet over to read it.</p>
+      <div class="try" id="try-slate">
+        <p class="try-title">Try it: what you read, and what you punch</p>
+        <input type="text" id="slate-text" class="mini-input" value="slate" spellcheck="false" aria-label="Word for the slate">
+        <p class="side">Read, from the front</p>
+        <div class="sheet mini" id="slate-front"></div>
+        <p class="side">Punched, from the back: right to left, every cell mirrored</p>
+        <div class="sheet mini" id="slate-back"></div>
+      </div>
+      <h3>The Perkins Brailler</h3>
+      <p>A braille typewriter has one key per dot, and you press the keys for a cell all at once. The best known, the <strong>Perkins Brailler</strong>, was designed by David Abraham at the Perkins School for the Blind and first sold in 1951. It has six dot keys, a space key, a backspace key and a key for a new line, and well over 300,000 have been made. The Drill's <a href="drill.html#write">Write mode</a> uses the same finger layout on a computer keyboard: <kbd>F</kbd> <kbd>D</kbd> <kbd>S</kbd> for dots 1 2 3, <kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd> for 4 5 6.</p>
+      <h3>Embossers and displays</h3>
+      <p>A <strong>braille embosser</strong> is a printer that punches braille into heavy paper, often on both sides of the sheet. Braille embossing machines go back to the end of the 1800s.</p>
+      <p>A <strong>refreshable braille display</strong> sits beside a computer keyboard: a row of cells, usually 40 or 80, whose round-tipped pins rise and fall to show a line of text, often driven by piezo crystals that grow when a voltage is applied. Each cell has eight pins: computers add dots 7 and 8 beneath the six, making room for 256 patterns. Unicode has all 256 in its <em>Braille Patterns</em> block, U+2800 to U+28FF, added in version 3.0 in 1999. Those are the characters the Press copies when you press <em>Copy braille</em>.</p>
+      <p class="onwards"><a class="primary" href="drill.html">Now drill it →</a></p>
     </section>
   </article>
 </main>

@@ -42,7 +42,6 @@
 .board .glyph .print{font-size:calc(var(--u) * .5)}
 #check{margin-top:18px}
 .keys{margin:10px 0 0;color:var(--muted);font-size:.86rem;line-height:1.6;text-align:center;text-wrap:pretty}
-kbd{display:inline-block;min-width:1.5em;padding:0 4px;border:1px solid var(--edge);border-bottom-width:2px;border-radius:4px;background:var(--paper);font:600 .8rem/1.5 var(--serif);text-align:center}
 
 .fb{margin:16px 0 0;padding:10px 14px 12px;border-radius:6px;font-size:1rem;line-height:1.45;text-align:center;text-wrap:pretty}
 .fb.ok{background:var(--okbg);color:var(--ok)}

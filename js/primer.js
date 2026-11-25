@@ -146,6 +146,26 @@ function drawContractions(boxId, list) {
 drawContractions("wordsigns", WORDSIGNS);
 drawContractions("strong", STRONG);
 
+// ---- 6. Slate and stylus: the same word as read, and as punched from the back ----
+
+// Seen from the back, a cell's left column is on the right: dot 1 swaps with 4, 2 with 5, 3 with 6.
+const MIRROR = { 1: 4, 2: 5, 3: 6, 4: 1, 5: 2, 6: 3 };
+const mirrorCell = cell => [...cell].map(dot => MIRROR[dot]).sort().join("");
+
+function pressSlate() {
+  const text = byId("slate-text").value || " ";
+  const result = translate(text, table());
+  byId("slate-front").replaceChildren(drawBraille(result, table()));
+  // From the back: lines stay in order, but words, glyphs and cells run right to left, each cell mirrored.
+  const back = {
+    lines: result.lines.map(words => words.slice().reverse().map(glyphs => glyphs.slice().reverse().map(glyph =>
+      ({ ...glyph, cells: glyph.cells.slice().reverse().map(mirrorCell) })))),
+  };
+  byId("slate-back").replaceChildren(drawBraille(back, table()));
+}
+byId("slate-text").addEventListener("input", pressSlate);
+parts.push(pressSlate);
+
 // ---- Wiring ----
 
 buildLanguageSwitch(byId("langs"), lang, id => { lang = id; parts.forEach(redraw => redraw()); });

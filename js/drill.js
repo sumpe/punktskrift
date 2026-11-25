@@ -339,5 +339,7 @@ nextButton.addEventListener("click", next);
 byId("stop").addEventListener("click", stop);
 
 loadSettings();
+// drill.html#read or #write opens in that mode (the Primer links to Write mode)
+if (location.hash === "#read" || location.hash === "#write") { mode = location.hash.slice(1); saveSettings(); }
 showMode();
 showLevels();
