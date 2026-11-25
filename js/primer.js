@@ -82,6 +82,34 @@ byId("decades").addEventListener("click", event => {
 });
 drawDecades();
 
+// ---- 3. Capitals, numbers, signs: the language's indicators in the text, and a small press ----
+
+// A sign (one or more cells) drawn inline, small, in the running text
+function inlineSign(sign) {
+  const wrap = makeElement("span", "inline");
+  const cells = makeElement("span", "inline-sign");
+  cells.setAttribute("aria-hidden", "true");
+  sign.split("-").forEach(cell => cells.append(drawCell(cell)));
+  wrap.append(cells, ` (${sign.split("-").map(dotsText).join(", then ")})`);
+  return wrap;
+}
+
+function showSigns() {
+  for (const name of document.querySelectorAll(".lang-name")) name.textContent = table().english;
+  for (const slot of document.querySelectorAll(".sign[data-sign]")) {
+    const sign = table()[slot.dataset.sign];
+    slot.replaceChildren(sign ? inlineSign(sign) : makeElement("span", null, "none"));
+  }
+}
+parts.push(showSigns);
+
+function pressMini() {
+  const text = byId("mini-text").value || " ";
+  byId("mini-sheet").replaceChildren(drawBraille(translate(text, table()), table()));
+}
+byId("mini-text").addEventListener("input", pressMini);
+parts.push(pressMini);
+
 // ---- Wiring ----
 
 buildLanguageSwitch(byId("langs"), lang, id => { lang = id; parts.forEach(redraw => redraw()); });

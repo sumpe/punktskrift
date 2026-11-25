@@ -39,4 +39,12 @@
 /* A raised dot with a halo: the dots a row adds to the first */
 .dot.up.added{box-shadow:0 0 0 calc(var(--u) * .12) var(--card),0 0 0 calc(var(--u) * .24) var(--accent),calc(var(--u) * .06) calc(var(--u) * .12) calc(var(--u) * .2) var(--shade)}
 
+/* 3: signs drawn inline in the text, and the small press */
+.inline{white-space:nowrap}
+.inline-sign{--u:5px;display:inline-flex;gap:3px;vertical-align:middle;line-height:0}
+.inline-sign .cell{padding:2px 3px;background:var(--paper);border:1px solid var(--line);border-radius:3px}
+.mini-input{display:block;width:100%;min-height:48px;margin:0 0 14px;padding:8px 14px;border:1px solid var(--edge);border-radius:6px;background:var(--paper);font-size:1.15rem}
+.mini-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.sheet.mini{--u:clamp(8px,2.2vw,11px);min-height:0;padding:calc(var(--u) * 2) calc(var(--u) * 1.8);box-shadow:none}
+
 @media (hover:hover){.contents a:hover{text-decoration-color:var(--ink)}}

@@ -35,6 +35,7 @@
       <ol>
         <li><a href="#cell">The cell</a></li>
         <li><a href="#alphabet">The alphabet's pattern</a></li>
+        <li><a href="#signs">Capitals, numbers, signs</a></li>
       </ol>
     </nav>
 
@@ -62,6 +63,19 @@
       </div>
       <p>And <em>w</em>? Louis Braille built the alphabet in French order, and in the France of the 1820s <em>w</em> was seldom used. So it doesn't fit the pattern: it comes after the others, on dots 2 4 5 6. That is <em>j</em> with dot 6 added.</p>
       <p>The same trick gives the digits: <em>a</em> to <em>j</em> double as 1 to 9 and 0. There's more on that in the next section.</p>
+    </section>
+
+    <section id="signs">
+      <h2><span class="no">3</span> Capitals, numbers, signs</h2>
+      <p>63 patterns can't cover 26 letters twice over (small and capital), ten digits and all the punctuation. So braille reuses its cells and puts a sign in front that says how to read what follows. These signs, called <em>indicators</em>, take up a cell of their own but have no print letter.</p>
+      <p>The <strong>capital sign</strong> says the next letter is a capital: in <span class="lang-name"></span> braille it's <span class="sign" data-sign="capital"></span>. A doubled or separate sign covers a whole word in capitals: <span class="sign" data-sign="capsWord"></span>.</p>
+      <p>The <strong>number sign</strong>, <span class="sign" data-sign="number"></span>, turns <em>a</em> to <em>j</em> into the digits 1 to 0 until the word ends, so 2026 is the number sign followed by <em>b j b f</em>. If a letter from <em>a</em> to <em>j</em> follows a number, as in <em>3a</em>, the <strong>letter sign</strong> <span class="sign" data-sign="letterSign"></span> says the number is over.</p>
+      <p>Punctuation reuses the first ten shapes too, moved down a row. In English, a comma is <em>a</em>'s dot moved down to dot 2, and a full stop is <em>d</em> moved down to dots 2 5 6. That's why reading braille is partly reading <em>where</em> in the cell the dots sit.</p>
+      <div class="try" id="try-signs">
+        <p class="try-title">Try it: type anything, and point at the labelled cells</p>
+        <input type="text" id="mini-text" class="mini-input" value="Room 3a at NASA opens at 9." spellcheck="false" aria-label="Text to press">
+        <div class="sheet mini" id="mini-sheet"></div>
+      </div>
     </section>
   </article>
 </main>
