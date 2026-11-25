@@ -8,6 +8,7 @@
 // The switch on the page lists the tables in the order they are defined here.
 //
 // What each table holds:
+//   sample       a greeting, pressed when the sentence is left empty
 //   letters      letters beyond a–z, lower case (a–z are shared, in braille.js)
 //   accents      English only: accent signs written before a letter (combining mark → sign)
 //   signs        punctuation and symbols
@@ -29,6 +30,7 @@ BRAILLE_TABLES.en = {
   name: "English",      // as the language calls itself, for the switch
   english: "English",   // for the notes under the sheet
   lang: "en",
+  sample: "Hello, Piotrek.",
   code: "Unified English Braille, grade 1",
   source: "liblouis en-ueb-g1.ctb, en-ueb-chardefs.uti",
   letters: {},
@@ -73,6 +75,7 @@ BRAILLE_TABLES.sv = {
   name: "Svenska",
   english: "Swedish",
   lang: "sv",
+  sample: "Hej, Piotrek!",
   code: "Svensk punktskrift, oförkortad",
   source: "liblouis sv-g0.utb, sv-6common.uti (made with Punktskriftsnämnden)",
   letters: { "å": "16", "ä": "345", "ö": "246", "é": "123456", "ü": "1256", "à": "12356", "è": "2346" },
@@ -104,6 +107,7 @@ BRAILLE_TABLES.de = {
   name: "Deutsch",
   english: "German",
   lang: "de",
+  sample: "Hallo, Piotrek!",
   code: "Deutsche Basisschrift",
   source: "liblouis de-g0.utb, de-g0-core.uti, de-chardefs6.cti, de-accents.cti (by SBS, the Swiss braille library)",
   letters: {
@@ -153,6 +157,7 @@ BRAILLE_TABLES.pl = {
   name: "Polski",
   english: "Polish",
   lang: "pl",
+  sample: "Cześć, Piotrek!",
   code: "Polski brajl, pełnozapisowy",
   source: "liblouis Pl-Pl-g1.utb; € from Wikipedia, Polish Braille",
   letters: {
@@ -188,6 +193,7 @@ BRAILLE_TABLES.pt = {
   name: "Português",
   english: "Portuguese",
   lang: "pt-PT",
+  sample: "Olá, Piotrek!",
   code: "Grafia Braille para a Língua Portuguesa",
   source: "liblouis pt-pt-g1.utb, which follows the Grafia Braille para a Língua Portuguesa (2002)",
   letters: {

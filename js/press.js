@@ -64,7 +64,9 @@ function chooseLanguage(id) {
   lang = id;
   markLanguage();
   textBox.lang = BRAILLE_TABLES[id].lang;
-  if (pressed != null) press(pressed);
+  const wasSample = !textBox.value.trim();
+  textBox.placeholder = BRAILLE_TABLES[id].sample;
+  if (pressed != null) press(wasSample ? textBox.placeholder : pressed);
 }
 
 // ---- Laying out the sheet ----
@@ -180,4 +182,5 @@ showPrint.addEventListener("change", () => sheet.classList.toggle("bare", !showP
 
 buildSwitch();
 textBox.lang = BRAILLE_TABLES[lang].lang;
+textBox.placeholder = BRAILLE_TABLES[lang].sample;
 press(textBox.placeholder);

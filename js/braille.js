@@ -186,6 +186,7 @@ function toUnicode(result) {
 function tableProblems(table) {
   const problems = [];
   const check = (what, sign) => { if (!isSign(sign)) problems.push(`${what}: "${sign}" is not a braille sign`); };
+  ["name", "english", "lang", "code", "sample"].forEach(key => { if (!table[key]) problems.push(`${key} is missing`); });
   ["capital", "capsWord", "number", "letterSign"].forEach(key => check(key, table[key]));
   ["capsWordEnd", "capsPhrase", "capsPhraseEnd"].forEach(key => { if (table[key] != null) check(key, table[key]); });
   for (const group of ["letters", "signs", "midWord", "afterNumber", "inNumber", "accents"]) {
