@@ -54,3 +54,26 @@ CASES.sv = [
   ["€", "45 15"],
   ["snö ☃", "234 1345 246 | =☃"],
 ];
+
+CASES.de = [
+  ["Hallo, Welt!", "46 125 1 123 123 135 2 | 46 2456 15 123 2345 235"],
+  ["Straße", "46 234 2345 1235 1 2346 15"],
+  ["Grüße", "46 1245 1235 1256 2346 15"],
+  ["Café", "46 14 1 124 4 15"],
+  // Capitals: a whole word, a run that lower case ends, single capitals inside a word
+  ["ÄRGER", "45 345 1235 1245 15 1235"],
+  ["ABCs", "45 1 12 14 6 234"],
+  ["GmbH", "46 1245 134 12 46 125"],
+  // Quotes in both German styles; signs between letters and after digits take dot 6
+  ["„Ja“", "236 46 245 1 356"],
+  ["»Ja«", "236 46 245 1 356"],
+  ["Lehrer(innen)", "46 123 15 125 1235 15 1235 6 2356 24 1345 1345 15 1345 2356"],
+  ["geht’s", "1245 15 125 2345 6 234"],
+  ["Seite 3!", "46 234 15 24 2345 15 | 3456 14 6 235"],
+  // Numbers: time and decimal comma stay in the number; the letter sign is dot 6
+  ["2026", "3456 12 245 12 124"],
+  ["12:30", "3456 1 12 25 14 245"],
+  ["3,5", "3456 14 2 15"],
+  ["3a", "3456 14 6 1"],
+  ["Schnee ☃", "46 234 14 125 1345 15 15 | =☃"],
+];
