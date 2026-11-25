@@ -1,4 +1,4 @@
-// Punktskrift Press: known translations for each language, checked by tests/index.html.
+// Punktskrift Braille Press: known translations for each language, checked by tests/index.html.
 // Expected braille is written in dot numbers: cells split by spaces, words by " | ", lines by " / ".
 // "=x" stands for a character x that has no cell and is kept in print.
 

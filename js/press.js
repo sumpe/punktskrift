@@ -1,4 +1,4 @@
-// Punktskrift Press: the page. Reads the sentence, asks braille.js for the cells and lays them out on the sheet.
+// Punktskrift Braille Press: the page. Reads the sentence, asks braille.js for the cells and lays them out on the sheet.
 // Loaded after tables.js and braille.js, with a plain <script src>.
 
 const byId = id => document.getElementById(id);

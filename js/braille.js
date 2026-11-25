@@ -1,4 +1,4 @@
-// Punktskrift Press: turns text into uncontracted braille using a table from tables.js.
+// Punktskrift Braille Press: turns text into uncontracted braille using a table from tables.js.
 // Loaded with a plain <script src>, not as a module, so the page still works opened straight from disk.
 //
 // Cells are written as dot numbers, as braille transcribers do: "125" is dots 1, 2 and 5 (h).

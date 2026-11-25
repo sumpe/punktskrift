@@ -1,4 +1,4 @@
-// Punktskrift Press: one braille table per language, uncontracted (one cell per letter).
+// Punktskrift Braille Press: one braille table per language, uncontracted (one cell per letter).
 // Cells are dot numbers; several cells are joined with dashes (see braille.js).
 //
 // The cells come from the liblouis tables, the open-source braille translator behind most

@@ -1,4 +1,4 @@
-# Piotrek's Punktskrift Press
+# Piotrek's Punktskrift Braille Press
 
 Write a sentence and press it into a page of braille. The cells are embossed one by one onto warm paper, with the print in small type under each cell.
 
