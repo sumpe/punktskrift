@@ -16,6 +16,12 @@ The euro sign in Polish (⠈⠑) comes from Wikipedia's article on [Polish Brail
 
 If you read braille in one of these languages and spot a wrong cell, please open an issue.
 
+The English contractions in the Primer (*you can do it*, *and*, *for*, *of*, *the*, *with*) were checked against liblouis's `en-ueb-g2.ctb`.
+
+## The Primer's facts
+
+The history and tools sections were checked against these Wikipedia articles (November 2026): [Braille](https://en.wikipedia.org/wiki/Braille), [Louis Braille](https://en.wikipedia.org/wiki/Louis_Braille), [Charles Barbier](https://en.wikipedia.org/wiki/Charles_Barbier), [Slate and stylus](https://en.wikipedia.org/wiki/Slate_and_stylus), [Perkins Brailler](https://en.wikipedia.org/wiki/Perkins_Brailler), [Braille embosser](https://en.wikipedia.org/wiki/Braille_embosser), [Refreshable braille display](https://en.wikipedia.org/wiki/Refreshable_braille_display) and [Braille Patterns](https://en.wikipedia.org/wiki/Braille_Patterns). Where they disagree (the year Louis Braille first showed his system, 1824 or 1825), the Primer says "at about fifteen".
+
 ## Look
 
 The colours, type and layout follow Piotrek's [Polynoun Tincture](https://github.com/sumpe/tincture).
