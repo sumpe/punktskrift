@@ -5,6 +5,8 @@
 // screen readers, which in turn follow each country's braille authority. The file each table
 // was read from is named in its `source`; CREDITS.md lists the authorities.
 //
+// The switch on the page lists the tables in the order they are defined here.
+//
 // What each table holds:
 //   letters      letters beyond a–z, lower case (a–z are shared, in braille.js)
 //   accents      English only: accent signs written before a letter (combining mark → sign)
@@ -24,7 +26,8 @@
 const BRAILLE_TABLES = {};
 
 BRAILLE_TABLES.en = {
-  name: "English",
+  name: "English",      // as the language calls itself, for the switch
+  english: "English",   // for the notes under the sheet
   lang: "en",
   code: "Unified English Braille, grade 1",
   source: "liblouis en-ueb-g1.ctb, en-ueb-chardefs.uti",

@@ -65,7 +65,7 @@ function isShouted(word) {
  *   lines   — an array of lines; each line an array of words; each word an array of glyphs
  *   glyph   — { print, cells, role }, where role is one of
  *             letter, digit, sign (punctuation and symbols),
- *             cap, num, let (indicators: capital, number, letter sign),
+ *             cap, capsEnd, num, let (indicators: capital, end of capitals, number, letter sign),
  *             unknown (a character this braille has no cell for; cells is [])
  *   unknown — the characters that had no cell, in the order they first appeared
  */
@@ -147,7 +147,7 @@ function translateWord(word, table, phraseRole, unknown) {
       // After a number, a lower-case letter that looks like a digit needs the letter sign.
       if (afterDigit && isLower(ch) && DIGIT_LIKE.has(cellsOf(sign)[0])) add("", table.letterSign, "let");
       add(ch, sign, "letter");
-      if (after[k]) add("", after[k], "cap");
+      if (after[k]) add("", after[k], "capsEnd");
       return;
     }
 

@@ -22,24 +22,24 @@
 
   <form id="press" class="slip" autocomplete="off">
     <span class="lbl" id="lang-label">Braille of</span>
-    <div class="seg" id="langs" role="radiogroup" aria-labelledby="lang-label">
-      <button type="button" role="radio" aria-checked="true" class="on" data-lang="en" lang="en">English</button>
-      <button type="button" role="radio" aria-checked="false" data-lang="sv" lang="sv">Svenska</button>
-      <button type="button" role="radio" aria-checked="false" data-lang="de" lang="de">Deutsch</button>
-      <button type="button" role="radio" aria-checked="false" data-lang="pl" lang="pl">Polski</button>
-      <button type="button" role="radio" aria-checked="false" data-lang="pt" lang="pt-PT">Português</button>
-    </div>
+    <div class="seg" id="langs" role="radiogroup" aria-labelledby="lang-label"></div>
     <label class="lbl" for="text">Your sentence</label>
     <textarea id="text" rows="3" spellcheck="false" placeholder="Hello, Piotrek."></textarea>
     <button type="submit" class="primary" id="go">Press</button>
   </form>
 
   <section class="sheet-wrap" aria-label="Braille page">
-    <div class="sheet" id="sheet">
-      <p class="blank">The page is still blank.</p>
+    <div class="tools">
+      <label class="toggle"><input type="checkbox" id="show-print" checked> Show the print under each cell</label>
     </div>
+    <div class="sheet" id="sheet"></div>
+    <p class="note" id="note" hidden></p>
+    <p class="sr" id="reader" aria-live="polite"></p>
   </section>
 </main>
 <footer class="foot">By Peter S</footer>
+<script src="js/tables.js"></script>
+<script src="js/braille.js"></script>
+<script src="js/press.js"></script>
 </body>
 </html>
