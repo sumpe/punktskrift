@@ -22,6 +22,7 @@ let lang = Object.keys(BRAILLE_TABLES)[0];
 let pressed = null; // the text on the sheet now
 let pressedLang = null;
 let punching = null; // the timer while cells are still being embossed
+let braille = "";    // the sheet as Unicode braille, for copying
 
 const pressButton = byId("go");
 const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -120,7 +121,9 @@ function press(text) {
   punch(page);
 
   // Screen readers get the sentence and the braille as text, which braille displays can show.
-  reader.textContent = `${table.english} braille for “${text}”: ${toUnicode(result)}`;
+  braille = toUnicode(result);
+  reader.textContent = `${table.english} braille for “${text}”: ${braille}`;
+  rememberInLink();
 
   if (result.unknown.length) {
     note.textContent = `Not in ${table.english} braille, so left as an empty cell: ${result.unknown.join(" ")}`;
@@ -158,6 +161,40 @@ function finishPunching() {
   pressButton.textContent = "Press";
 }
 
+// ---- Keeping and sharing ----
+
+// The address holds the language and the sentence, #sv/hej%20piotrek, so a pressed page can be shared.
+function rememberInLink() {
+  const typed = textBox.value.trim();
+  const hash = "#" + lang + (typed ? "/" + encodeURIComponent(typed) : "");
+  if (location.hash !== hash) history.replaceState(null, "", hash);
+}
+
+function readLink() {
+  const match = /^#([a-z]+)(?:\/(.*))?$/.exec(location.hash);
+  if (!match || !BRAILLE_TABLES[match[1]]) return false;
+  lang = match[1];
+  try { textBox.value = match[2] ? decodeURIComponent(match[2]) : ""; } catch { textBox.value = ""; }
+  return true;
+}
+
+async function copyBraille() {
+  try {
+    await navigator.clipboard.writeText(braille);
+  } catch {
+    // Older browsers, or a page opened from disk where the clipboard is off limits
+    const scratch = makeElement("textarea");
+    scratch.value = braille;
+    document.body.append(scratch);
+    scratch.select();
+    document.execCommand("copy");
+    scratch.remove();
+  }
+  const button = byId("copy");
+  button.textContent = "Copied";
+  setTimeout(() => { button.textContent = "Copy braille"; }, 1600);
+}
+
 // ---- Wiring ----
 
 form.addEventListener("submit", event => {
@@ -179,8 +216,18 @@ textBox.addEventListener("keydown", event => {
 });
 
 showPrint.addEventListener("change", () => sheet.classList.toggle("bare", !showPrint.checked));
+byId("copy").addEventListener("click", copyBraille);
+byId("print").addEventListener("click", () => { finishPunching(); window.print(); });
+
+// Start from the link if there is one, otherwise from the first language's greeting.
+function start() {
+  readLink();
+  markLanguage();
+  textBox.lang = BRAILLE_TABLES[lang].lang;
+  textBox.placeholder = BRAILLE_TABLES[lang].sample;
+  press(textBox.value.trim() || textBox.placeholder);
+}
+window.addEventListener("hashchange", () => { if (readLink()) start(); });
 
 buildSwitch();
-textBox.lang = BRAILLE_TABLES[lang].lang;
-textBox.placeholder = BRAILLE_TABLES[lang].sample;
-press(textBox.placeholder);
+start();

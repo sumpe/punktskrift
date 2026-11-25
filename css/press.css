@@ -44,8 +44,9 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
    Sizes follow real braille: dots 2.5 mm apart, cells 6 mm apart, lines 10 mm apart.
    --u is one dot step; everything else is a multiple of it. */
 .sheet-wrap{margin:36px 0 0}
-.tools{display:flex;justify-content:flex-end;gap:16px;margin:0 0 10px}
-.toggle{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--muted);font-style:italic;font-size:.94rem;cursor:pointer}
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 10px}
+.ghost{min-height:40px;padding:6px 14px;border:1px solid var(--edge);border-radius:6px;background:transparent;font-size:.94rem;transition:background-color .15s}
+.toggle{display:inline-flex;margin-left:auto;align-items:center;gap:8px;min-height:44px;color:var(--muted);font-style:italic;font-size:.94rem;cursor:pointer}
 .toggle input{width:18px;height:18px;margin:0;accent-color:var(--accent)}
 .sheet{
   --u:clamp(9px,2.6vw,14px);
@@ -100,3 +101,19 @@ h1{margin:0;font-weight:600;font-size:clamp(2.3rem,9vw,3.2rem);line-height:1.02;
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 @media (max-width:400px){main{padding-left:16px;padding-right:16px}.slip{padding:16px}}
+@media (hover:hover){.ghost:hover{background:var(--hover)}}
+
+/* Printing: just the sheet, at real braille size (dots 2.5 mm apart), with the dots in ink
+   since a printer can't emboss. */
+@media print{
+  html,body{background:#fff}
+  .nav,.mast,.slip,.tools,.note,.foot{display:none}
+  main{max-width:none;padding:0}
+  .sheet-wrap{margin:0}
+  .sheet{--u:2.5mm;padding:0;border:0;box-shadow:none;background:none}
+  .stamp{position:static;margin:0 0 6mm;text-align:right}
+  .dot.up{background:#2a1c13;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .dot{background:none}
+  .print{color:#67503f}
+  .line,.word{break-inside:avoid}
+}
