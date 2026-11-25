@@ -1,1 +1,52 @@
-/* Punktskrift Drill: the game for learning the cells. Loaded after braille.css. */
+/* Punktskrift Drill: the game for learning the cells. Loaded after braille.css.
+   The question card follows Polynoun's quiz. Right and wrong are never colour alone: ✓ and ✗, and words. */
+.seg .mode-hint{display:block;color:var(--muted);font-weight:400;font-style:italic;font-size:.82rem}
+
+/* Level chips, as on Polynoun */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.chips button{flex:0 0 auto;min-height:44px;padding:8px 12px;border:1px solid var(--edge);border-radius:6px;background:transparent;transition:background-color .15s,border-color .15s,color .15s}
+.chips button.on{background:var(--hover);border-color:var(--accent);color:var(--accent);font-weight:600}
+.hint{min-height:1.5em;margin:0;color:var(--muted);font-size:.94rem;line-height:1.5;text-wrap:pretty}
+
+/* The question card */
+.card{max-width:540px;margin:36px 0 0;padding:20px 20px 24px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;color:var(--muted);font-style:italic;font-size:.94rem;font-variant-numeric:lining-nums}
+.quiet{min-height:36px;padding:0 4px;border:0;background:none;color:var(--muted);font-style:italic;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.bar{height:3px;margin-bottom:22px;background:var(--sunk);border-radius:2px;overflow:hidden}
+#fill{height:100%;width:0;background:var(--accent);transition:width .3s ease-out}
+.ask{margin:0 0 14px;color:var(--muted);font-style:italic;text-align:center}
+
+/* The cell, big, on a square of braille paper */
+.stage{display:flex;justify-content:center}
+.tile{
+  --u:clamp(26px,8vw,36px);
+  display:inline-flex;align-items:flex-start;gap:calc(var(--u) * .9);padding:calc(var(--u) * .9) calc(var(--u) * 1.1) calc(var(--u) * .5);
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  box-shadow:inset 0 1px 3px rgba(42,28,19,.06);
+}
+.tile .print{font-size:calc(var(--u) * .9);color:var(--ink)}
+.tile .print.label{font-size:calc(var(--u) * .55)}
+
+/* Read: four answers */
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px}
+.choice{min-height:56px;border:1px solid var(--edge);border-radius:6px;background:var(--paper);font-size:1.5rem;line-height:1.2;transition:background-color .15s,border-color .15s}
+.choice:disabled{cursor:default;color:var(--muted)}
+.choice.right{border-color:var(--ok);background:var(--okbg);color:var(--ok);font-weight:600}
+.choice.right::after{content:" ✓"}
+.choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+.choice.wrong::after{content:" ✗"}
+
+.fb{margin:16px 0 0;padding:10px 14px 12px;border-radius:6px;font-size:1rem;line-height:1.45;text-align:center;text-wrap:pretty}
+.fb.ok{background:var(--okbg);color:var(--ok)}
+.fb.bad{background:var(--badbg);color:var(--bad)}
+#next{margin-top:16px}
+
+/* The end of a round */
+.score{margin:0 0 4px;font-weight:600;font-size:1.8rem;text-align:center;font-variant-numeric:lining-nums}
+.ghost.wide{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;margin-top:10px}
+
+@media (hover:hover){
+  .choice:not(:disabled):hover{background:var(--hover)}
+  .chips button:not(.on):hover{background:var(--hover)}
+  .quiet:hover{color:var(--ink)}
+}

@@ -24,10 +24,37 @@
     <h1>The Drill</h1>
     <p class="sub">Learn the cells, a few at a time: read them, then write them.</p>
   </header>
+
+  <form id="setup" class="slip" autocomplete="off">
+    <span class="lbl" id="lang-label">Braille of</span>
+    <div class="seg" id="langs" role="radiogroup" aria-labelledby="lang-label"></div>
+    <span class="lbl" id="mode-label">Mode</span>
+    <div class="seg" id="modes" role="radiogroup" aria-labelledby="mode-label">
+      <button type="button" role="radio" data-mode="read">Read <span class="mode-hint">a cell → its letter</span></button>
+      <button type="button" role="radio" data-mode="write">Write <span class="mode-hint">a letter → its cell</span></button>
+    </div>
+    <span class="lbl" id="level-label">Level</span>
+    <div class="chips" id="levels" role="radiogroup" aria-labelledby="level-label"></div>
+    <p class="hint" id="level-hint"></p>
+    <button type="submit" class="primary" id="start">Start</button>
+  </form>
+
+  <section id="game" class="card" hidden aria-live="polite">
+    <div class="top"><span id="count"></span><button type="button" class="quiet" id="stop">Stop</button></div>
+    <div class="bar" aria-hidden="true"><div id="fill"></div></div>
+    <p class="ask" id="ask"></p>
+    <div class="stage" id="stage"></div>
+    <div class="answer" id="answer"></div>
+    <p class="fb" id="feedback" hidden></p>
+    <button type="button" class="primary" id="next" hidden>Next</button>
+  </section>
+
+  <section id="done" class="card" hidden aria-live="polite"></section>
 </main>
 <footer class="foot">By Peter S</footer>
 <script src="js/tables.js"></script>
 <script src="js/braille.js"></script>
+<script src="js/lessons.js"></script>
 <script src="js/common.js"></script>
 <script src="js/drill.js"></script>
 </body>
