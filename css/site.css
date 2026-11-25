@@ -63,7 +63,10 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
 .nav{border-bottom:1px solid var(--line)}
 .nav .in{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:760px;margin:0 auto;padding:2px 20px}
 .brand{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);font-weight:600;font-size:1.06rem;letter-spacing:.01em;text-decoration:none;border-radius:4px}
-.nav .aside{color:var(--muted);font-style:italic;font-size:.94rem}
+/* The three pages, like Polynoun's language links: the current one underlined */
+.pages{display:flex;gap:4px;margin-right:-8px}
+.pages a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px;border-radius:4px;color:var(--muted);font-size:.98rem;text-decoration:none}
+.pages a[aria-current]{color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:6px}
 
 /* Footer: a hairline the width of the text column, then the credit */
 .foot{width:calc(100% - 40px);max-width:720px;margin:0 auto;padding:18px 0 32px;border-top:1px solid var(--line);color:var(--muted);font-style:italic;font-size:.85rem;text-align:right}
@@ -73,7 +76,7 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}
   .foot{width:calc(100% - 32px)}
 }
 @media (hover:hover){
-  .brand:hover{color:var(--ink)}
+  .brand:hover,.pages a:hover{color:var(--ink)}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important;animation:none!important}

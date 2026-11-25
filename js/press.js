@@ -9,7 +9,7 @@ const showPrint = byId("show-print");
 const reader = byId("reader");
 const explainHint = byId("explain-hint");
 
-let lang = Object.keys(BRAILLE_TABLES)[0];
+let lang = savedLanguage(); // the language last chosen on any page, unless the link says otherwise
 let pressed = null; // the text on the sheet now
 let pressedLang = null;
 let punching = null; // the timer while cells are still being embossed
@@ -145,7 +145,7 @@ showPrint.addEventListener("change", () => sheet.classList.toggle("bare", !showP
 byId("copy").addEventListener("click", copyBraille);
 byId("print").addEventListener("click", () => { finishPunching(); window.print(); });
 
-// Start from the link if there is one, otherwise from the first language's greeting.
+// Start from the link if there is one, otherwise from the remembered language's greeting.
 function start() {
   readLink();
   markLanguage(lang);
