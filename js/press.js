@@ -20,6 +20,11 @@ const reader = byId("reader");
 
 let lang = Object.keys(BRAILLE_TABLES)[0];
 let pressed = null; // the text on the sheet now
+let pressedLang = null;
+let punching = null; // the timer while cells are still being embossed
+
+const pressButton = byId("go");
+const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 // What the small print says under the indicator cells, and what it means on hover
 const LABELS = {
@@ -88,7 +93,9 @@ function drawGlyph(glyph) {
 }
 
 function press(text) {
+  finishPunching();
   pressed = text;
+  pressedLang = lang;
   const table = BRAILLE_TABLES[lang];
   const result = translate(text, table);
 
@@ -108,6 +115,7 @@ function press(text) {
   stamp.setAttribute("aria-hidden", "true");
   sheet.replaceChildren(stamp, page);
   page.setAttribute("aria-hidden", "true");
+  punch(page);
 
   // Screen readers get the sentence and the braille as text, which braille displays can show.
   reader.textContent = `${table.english} braille for “${text}”: ${toUnicode(result)}`;
@@ -120,12 +128,45 @@ function press(text) {
   }
 }
 
+// ---- The machine: cells are embossed one at a time, in reading order ----
+
+// About 35 ms a cell, like a brailler, but a long text never takes more than about four seconds.
+function punch(page) {
+  if (calm.matches) return;
+  const glyphs = [...page.querySelectorAll(".glyph")];
+  const cellCount = page.querySelectorAll(".cell").length;
+  const step = Math.min(35, 4000 / Math.max(cellCount, 1));
+  let n = 0;
+  for (const glyph of glyphs) {
+    glyph.style.setProperty("--t", `${Math.round(n * step)}ms`);
+    for (const cell of glyph.querySelectorAll(".cell")) cell.style.setProperty("--t", `${Math.round(n++ * step)}ms`);
+  }
+  page.classList.add("punching");
+  pressButton.textContent = "Pressing…";
+  punching = setTimeout(finishPunching, n * step + 300);
+}
+
+// Skip to the finished page.
+function finishPunching() {
+  if (!punching) return;
+  clearTimeout(punching);
+  punching = null;
+  const page = sheet.querySelector(".page");
+  if (page) page.classList.remove("punching");
+  pressButton.textContent = "Press";
+}
+
 // ---- Wiring ----
 
 form.addEventListener("submit", event => {
   event.preventDefault();
-  press(textBox.value.trim() || textBox.placeholder);
+  const text = textBox.value.trim() || textBox.placeholder;
+  // Pressing the same thing again while the press is running just finishes it.
+  if (punching && text === pressed && lang === pressedLang) finishPunching();
+  else press(text);
 });
+sheet.addEventListener("click", finishPunching);
+document.addEventListener("keydown", event => { if (event.key === "Escape") finishPunching(); });
 
 // Enter presses; Shift+Enter starts a new line.
 textBox.addEventListener("keydown", event => {
